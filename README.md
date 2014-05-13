@@ -16,14 +16,14 @@ With [biicode](http://biicode.com/) you can:
 
 ###1. Select your workspace or create one
 
-![create_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/create_ws)
-![select_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/select_ws)
-![select_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/selected_ws)
+![create_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/create_ws.png)
+![select_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/select_ws.png)
+![select_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/selected_ws.png)
 
 ###2. Check out the interface
 
-![ide](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/ide)
-![ide](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/file)
+![ide](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/ide.png)
+![ide](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/ide_file.png)
 
 ####2.1 Menu and Tools bar
 
