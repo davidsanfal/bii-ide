@@ -30,7 +30,16 @@ With [biicode](http://biicode.com/) you can:
 
 ####2.1 Menu and Tools bar
 
+1. File
+2. Workspace
+3. Commands
+4. About
+
 ####2.2 Workspace info
+
+1. Projects
+2. Blocks
+3. Blocks files tree
 
 ####2.3 Edition site
 
