@@ -1,0 +1,3 @@
+bii init
+pause
+exit

@@ -1,0 +1,3 @@
+bii find
+pause
+exit
