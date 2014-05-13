@@ -16,31 +16,22 @@ With [biicode](http://biicode.com/) you can:
 
 ###1. Select your workspace or create one
 
+![create_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/create_ws)
+![select_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/select_ws)
+![select_ws](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/selected_ws)
+
 ###2. Check out the interface
 
-####2.1 Menu bar
+![ide](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/ide)
+![ide](https://github.com/davidsanfal/bii-ide/tree/master/bii-ide/docs/images/file)
 
-1. File
-2. Workspace
-3. commands
-4. About
+####2.1 Menu and Tools bar
 
-####2.2 Toolbars
+####2.2 Workspace info
 
-####2.3 Workspace info
+####2.3 Edition site
 
-1. Projects
-2. Bloks
-3. File treeview
-
-####2.4 Edition site
-
-1. Text editor
-	1. Text editor
-	2. Arduino docs
-2. Terminal
-
-####2.5 Biicode commands
+####2.4 Biicode commands
 
 1. [settings](http://docs.biicode.com/arduino/reference/commands.html#bii-arduino-settings-managing-your-hive-settings)
 2. [find](http://docs.biicode.com/biicode/reference/commands.html#bii-find-retrieving-dependencies)
