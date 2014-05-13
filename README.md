@@ -1,6 +1,6 @@
 #bii-IDE
 
-**Bii-IDE** is an **ide for Arduino** that integrates all the functionality of [biicode](http://biicode.com/). You can [download the biiGUI package](https://www.biicode.com/downloads) from the biicode download site.
+**Bii-IDE** is an **ide for Arduino** that integrates all the functionality of [biicode](http://biicode.com/).
 
 With [biicode](http://biicode.com/) you can:
 
