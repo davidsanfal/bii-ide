@@ -11,6 +11,7 @@ class DialogWorkpace(QtGui.QDialog):
     def __init__(self, gui_path, parent=None):
         super(DialogWorkpace, self).__init__(parent)
         self.gui_path = gui_path
+        self.setWindowTitle('bii-IDE')
         self.createLayout()
         self.setWindowIcon(QtGui.QIcon(GUI_ICON))
         self.resize(400, 200)
