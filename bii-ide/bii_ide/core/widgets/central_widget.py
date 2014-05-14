@@ -8,7 +8,6 @@ from bii_ide.core.widgets.tab_editor.tab_editor import TabEditor
 from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
                                                      MONITOR)
 from bii_ide.common.style.biigui_stylesheet import button_style
-import subprocess
 
 GUI_CONFIG = "bii_ide.txt"
 
