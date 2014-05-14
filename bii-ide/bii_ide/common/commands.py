@@ -23,6 +23,6 @@ def open_terminal():
     elif sys.platform == "linux2":
         os.system("x-terminal-emulator")
     elif sys.platform == "darwin":
-        os.system("Terminal.App")
+        os.system("osascript -e 'tell application \"Terminal\" to do script \"'")
     else:
         pass
