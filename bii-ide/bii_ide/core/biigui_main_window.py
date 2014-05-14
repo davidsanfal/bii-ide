@@ -27,8 +27,7 @@ class biiGUI(QtGui.QMainWindow):
         self.gui_path = os.getcwd()
         if not os.path.exists(os.path.join(self.gui_path, 'resources')):
             # PyInstaller route
-            self.gui_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                         '..', '..', '..', '..', '..'))
+            self.gui_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 
         self.centralWidget = CentralWidget(self.gui_path)
         self.menubar = self.menuBar()

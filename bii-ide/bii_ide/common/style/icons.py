@@ -5,7 +5,7 @@ import os
 _path = os.getcwd()
 if not os.path.exists(os.path.join(_path, 'resources')):
     # PyInstaller route
-    _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', '..'))
+    _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 
 GUI_ICON = "%s/resources/img/gorilla.png" % _path
 GUI_ICON_128 = "%s/resources/img/gorilla_128.png" % _path
