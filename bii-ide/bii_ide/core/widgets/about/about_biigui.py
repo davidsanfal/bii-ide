@@ -29,7 +29,7 @@ class AboutBiiGUI(QDialog):
         lblTitle.setAlignment(Qt.AlignLeft)
         hbox.addWidget(lblTitle)
         vbox.addLayout(hbox)
-        vbox.addWidget(QLabel(self.tr("""BiiGUI: Arduino IDE with support for biicode""")))
+        vbox.addWidget(QLabel(self.tr("""Bii-IDE: Arduino IDE with support for biicode""")))
         vbox.addWidget(QLabel(self.tr("Version: 1.0")))
         link_biigui = QLabel(
             self.tr('Website: <a href="https://github.com/biicode/bii-ide"><span style=" '

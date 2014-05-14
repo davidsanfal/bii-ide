@@ -6,7 +6,7 @@ With [biicode](http://biicode.com/) you can:
 
 1. **Save your project in different folders** for a better organization.
 
-2. **Reuse yours and other users'code.** Reusing made easy: just `#include` the file you need and you get it. No more copy and paste files from project to project or dowloading zip files from tutorials.
+2. **Reuse yours and other users'code.** Reusing made easy: just **#include** the file you need and you get it. No more copy and paste files from project to project or dowloading zip files from tutorials.
 
 3. This is a **simple** and **fast** way to **compile and upload** your code in your Arduino.
 
@@ -16,41 +16,32 @@ With [biicode](http://biicode.com/) you can:
 
 ###1. Select your workspace or create one
 
-![](https://github.com/biicode/bii-ide/raw/master/docs/images/create_ws.png)
-
-![](https://github.com/biicode/bii-ide/raw/master/docs/images/select_ws.png)
-
-![](https://github.com/biicode/bii-ide/raw/master/docs/images/selected_ws.png)
+![](https://github.com/biicode/bii-ide/raw/master/docs/images/select_workspace.png)
 
 ###2. Check out the interface
 
 ![](https://github.com/biicode/bii-ide/raw/master/docs/images/ide.png)
 
-![](https://github.com/biicode/bii-ide/raw/master/docs/images/ide_file.png)
-
 ####2.1 Menu and Tools bar
 
-1. File
-2. Workspace
-3. Commands
-4. About
+1. `File:` tools to create and manage files and projects.
+2. `Workspace:` tools to create and manage workspace and update the information of it.
+3. `Commands:` biicode command set.
+4. `About:` information about bii-IDE, biicode, arduino and Qt.
 
 ####2.2 Workspace info
 
-1. Projects
-2. Blocks
-3. Blocks files tree
+1. `Projects:` projectlist of the selected workspace.
+2. `Blocks:` blocklist of the selected project.
+3. `Blocks files tree:` filetree of the selected block.
 
 ####2.3 Edition site
 
 ####2.4 Biicode commands
 
-1. [settings](http://docs.biicode.com/arduino/reference/commands.html#bii-arduino-settings-managing-your-hive-settings)
-2. [find](http://docs.biicode.com/biicode/reference/commands.html#bii-find-retrieving-dependencies)
-3. [build](http://docs.biicode.com/arduino/reference/commands.html#bii-arduino-build-build-the-project)
-4. [upload](http://docs.biicode.com/arduino/reference/commands.html#bii-arduino-upload-upload-a-firmware-in-arduino)
-5. monitor
-6. terminal
+1. `biicode command:` [biicode command info.](http://docs.biicode.com/arduino/reference/commands.html)
+2. `monitor:` Open a serial terminal to communicate with your Arduino.
+3. `terminal:` Open a OS Terminal to execute any command.
 
 ##Code dependencies
 
