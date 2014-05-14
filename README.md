@@ -18,11 +18,11 @@ With [biicode](http://biicode.com/) you can:
 
 ###1. Select your workspace or create one
 
-![](https://github.com/davidsanfal/bii-ide/raw/master/docs/images/select_workspace.png)
+![](https://github.com/biicode/bii-ide/raw/master/docs/images/select_workspace.png)
 
 ###2. Check out the interface
 
-![](https://github.com/davidsanfal/bii-ide/raw/master/docs/images/ide.png)
+![](https://github.com/biicode/bii-ide/raw/master/docs/images/ide.png)
 
 ####2.1 Menu and Tools bar
 
