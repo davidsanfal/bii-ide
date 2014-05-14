@@ -1,6 +1,8 @@
 #bii-IDE
 
-**Bii-IDE** is an **ide for Arduino** that integrates all the functionality of [biicode](http://biicode.com/).
+**bii-IDE** is an **ide for Arduino** that integrates all the functionality of [biicode](http://biicode.com/).
+
+**bii-IDE runs on windows and linux macos.** [You can download the appropriate installer for your platform in biicode](https://www.biicode.com/downloads). You need to [install biicode](http://docs.biicode.com/biicode/installation.html) too.
 
 With [biicode](http://biicode.com/) you can:
 
@@ -48,6 +50,22 @@ With [biicode](http://biicode.com/) you can:
 -   [biicode](https://www.biicode.com/downloads)
 -   [Python 2.7](http://www.python.org/)
 -   [PyQt4](http://www.riverbankcomputing.com/software/pyqt/intro)
+
+###Install biicode
+
+-	[Download biicode](https://www.biicode.com/downloads)
+
+###Windows
+
+-   [Python 2.7](https://www.python.org/download/)
+-   [PyQt4 installer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
+
+###Linux
+
+	#Install python 2.7
+	sudo apt-get install python2.7
+    #install PyQt4
+    sudo apt-get install python-qt4
 
 ##Cloning and Running
 
