@@ -12,7 +12,7 @@ def execute_command(gui_path, change_path, command):
         os.system('x-terminal-emulator -e "bash %s"' % bash_file)
     elif sys.platform == "darwin":
         bash_file = os.path.join(gui_path, "resources", "script", "unix", ("%s.bash" % command))
-        os.system('open /Applications/Utilities/Terminal.App -e "bash %s"' % bash_file)
+        os.system("osascript -e 'tell application \"Terminal\" to do script \"bash %s\"'" % bash_file)
     else:
         pass
 
