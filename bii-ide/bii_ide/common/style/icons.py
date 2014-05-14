@@ -3,7 +3,7 @@ import os
 
 #GENERAL
 _path = os.getcwd()
-if not os.path.exists(os.path.join(_path, 'resources')):
+if 'resources' not in os.listdir(_path):
     # PyInstaller route
     _path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 
