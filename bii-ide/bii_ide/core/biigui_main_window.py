@@ -114,8 +114,8 @@ class biiGUI(QtGui.QMainWindow):
         setup.triggered.connect(self.centralWidget.handleSetup)
 
         monitor = QtGui.QAction(QtGui.QIcon(MONITOR),
-                               'bii setup:arduino', self)
-        monitor.setStatusTip('Setup tool')
+                               'bii arduino:monitor', self)
+        monitor.setStatusTip('Serial monitor')
         monitor.triggered.connect(self.centralWidget.handleMonitor)
 
         biiMenu = self.menubar.addMenu('&commands')
