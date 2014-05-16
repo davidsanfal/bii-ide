@@ -3,7 +3,7 @@ from bii_ide.core.widgets.central_widget import CentralWidget
 import os
 from bii_ide.common.style.icons import (GUI_ICON, REFRESHWS, OPENWS, NEWWS,
     SETTINGS, FIND, BUILD, UPLOAD, QT_ICON, ARDUINO_GREY, BII_GREY, NEWFILE,
-    SAVEFILE, OPENFILE, EXIT_ICON, TERMINAL, SETUP, MONITOR, NEWPROJECT)
+    SAVEFILE, OPENFILE, EXIT_ICON, TERMINAL, SETUP, MONITOR, NEWPROJECT, CLEAN)
 from bii_ide.core.widgets.about.about_biigui import AboutBiiGUI
 from bii_ide.common.biicode.biicode_dependencies import dependencies_finder
 import sys
@@ -112,6 +112,11 @@ class biiGUI(QtGui.QMainWindow):
                                'bii setup:arduino', self)
         setup.setStatusTip('Setup tool')
         setup.triggered.connect(self.centralWidget.handleSetup)
+        
+        clean = QtGui.QAction(QtGui.QIcon(CLEAN),
+                               'bii clean', self)
+        clean.setStatusTip('Clean biicode project')
+        clean.triggered.connect(self.centralWidget.handleClean)
 
         monitor = QtGui.QAction(QtGui.QIcon(MONITOR),
                                'bii arduino:monitor', self)
@@ -124,6 +129,7 @@ class biiGUI(QtGui.QMainWindow):
         biiMenu.addAction(build)
         biiMenu.addAction(upload)
         biiMenu.addAction(monitor)
+        biiMenu.addAction(clean)
         biiMenu.addAction(setup)
         biiMenu.addAction(terminal)
 
@@ -133,6 +139,7 @@ class biiGUI(QtGui.QMainWindow):
         biiToolbar.addAction(build)
         biiToolbar.addAction(upload)
         biiToolbar.addAction(monitor)
+        biiToolbar.addAction(clean)
 
     def createAboutMenu(self):
         about_qt = QtGui.QAction('About Qt', self)

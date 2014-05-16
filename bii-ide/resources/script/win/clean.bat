@@ -1,0 +1,3 @@
+bii clean
+pause
+exit
