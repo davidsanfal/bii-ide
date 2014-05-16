@@ -55,12 +55,14 @@ With [biicode](http://biicode.com/) you can:
 
 -	[Download biicode](https://www.biicode.com/downloads)
 
-###Windows
+###Install Python 2.7 and PyQt4
+
+####Windows
 
 -   [Python 2.7](https://www.python.org/download/)
 -   [PyQt4 installer](http://www.riverbankcomputing.co.uk/software/pyqt/download)
 
-###Linux
+####Linux
 
 	#Install python 2.7
 	sudo apt-get install python2.7
