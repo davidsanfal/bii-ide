@@ -55,7 +55,7 @@ class biiGUI(QtGui.QMainWindow):
 
     def createWorkspaceMenu(self):
         refresh = QtGui.QAction(QtGui.QIcon(REFRESHWS),
-                                'Refresh', self)
+                                'Refresh workspace info', self)
         refresh.setShortcut('F5')
         refresh.setStatusTip('Refresh workspace info')
         refresh.triggered.connect(self.centralWidget.refresh_info)
@@ -78,9 +78,9 @@ class biiGUI(QtGui.QMainWindow):
         workspaceMenu.addAction(refresh)
 
         workspacToolbar = self.addToolBar('workspace')
+        workspacToolbar.addAction(refresh)
         workspacToolbar.addAction(newWS)
         workspacToolbar.addAction(openWS)
-        workspacToolbar.addAction(refresh)
 
     def createBiicodeMenu(self):
         settings = QtGui.QAction(QtGui.QIcon(SETTINGS),
@@ -112,7 +112,7 @@ class biiGUI(QtGui.QMainWindow):
                                'bii setup:arduino', self)
         setup.setStatusTip('Setup tool')
         setup.triggered.connect(self.centralWidget.handleSetup)
-        
+
         clean = QtGui.QAction(QtGui.QIcon(CLEAN),
                                'bii clean', self)
         clean.setStatusTip('Clean biicode project')
@@ -176,7 +176,6 @@ class biiGUI(QtGui.QMainWindow):
         AboutToolbar.addAction(aboutBiiDocs)
 
     def CreateFileMenu(self):
-        
         newProjectAction = QtGui.QAction(QtGui.QIcon(NEWPROJECT),
                                   'New project', self)
         newProjectAction.setStatusTip('Create new project')
@@ -217,3 +216,4 @@ class biiGUI(QtGui.QMainWindow):
         fileToolbar.addAction(saveAction)
         fileToolbar.addAction(newAction)
         fileToolbar.addAction(openAction)
+        fileToolbar.addAction(newProjectAction)
