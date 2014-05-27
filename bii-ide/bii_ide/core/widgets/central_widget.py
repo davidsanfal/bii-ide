@@ -6,7 +6,7 @@ from bii_ide.core.widgets.popup.workspace_popup import DialogWorkpace
 from bii_ide.common.commands import open_terminal, execute_command
 from bii_ide.core.widgets.tab_editor.tab_editor import TabEditor
 from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
-                                                     MONITOR)
+                                                     MONITOR, CLEAN)
 from bii_ide.common.style.biigui_stylesheet import button_style
 
 GUI_CONFIG = "bii_ide.txt"
@@ -124,6 +124,13 @@ class CentralWidget(QtGui.QWidget):
         self.button_settings.clicked.connect(self.handleSettings)
         self.button_settings.setStyleSheet(button_style)
 
+        self.button_clean = QtGui.QPushButton(QtGui.QIcon(CLEAN),
+                                                 '    clean',
+                                                 self)
+        self.button_clean.setIconSize(QtCore.QSize(40, 40))
+        self.button_clean.clicked.connect(self.handleClean)
+        self.button_clean.setStyleSheet(button_style)
+
         self.button_monitor = QtGui.QPushButton(QtGui.QIcon(MONITOR),
                                                  '    monitor',
                                                  self)
@@ -144,7 +151,8 @@ class CentralWidget(QtGui.QWidget):
         grid.addWidget(self.button_build, 2, 0)
         grid.addWidget(self.button_upload, 3, 0)
         grid.addWidget(self.button_monitor, 4, 0)
-        grid.addWidget(self.button_terminal, 5, 0)
+        grid.addWidget(self.button_clean, 5, 0)
+        grid.addWidget(self.button_terminal, 6, 0)
 
         self.biiButtonsBox = QtGui.QGroupBox("commands")
         self.biiButtonsBox.setLayout(grid)
@@ -188,6 +196,13 @@ class CentralWidget(QtGui.QWidget):
         if not str(select_path) == "" and os.path.exists(str(select_path)):
             execute_command(self.gui_path, str(select_path), "init")
 
+    def newProject(self):
+        if self.biicodeWorkspace.path:
+            execute_command(self.gui_path, self.biicodeWorkspace.path, "new")
+        else:
+            QtGui.QMessageBox.about(self, "There are any workspace", "Create a workspace first")
+            self.workspace_finder()
+
     def handleTerminal(self):
         if self.biicodeWorkspace.path:
             os.chdir(self.biicodeWorkspace.path)
@@ -196,18 +211,14 @@ class CentralWidget(QtGui.QWidget):
     def handleBuild(self):
         self.execute_bii_command("build")
 
-    def newProject(self):
-        if self.biicodeWorkspace.path:
-            execute_command(self.gui_path, self.biicodeWorkspace.path, "new")
-        else:
-            QtGui.QMessageBox.about(self, "There are any workspace", "Create a workspace first")
-            self.workspace_finder()
-
     def handleUpload(self):
         self.execute_bii_command("upload")
 
     def handleFind(self):
         self.execute_bii_command("find")
+        
+    def handleClean(self):
+        self.execute_bii_command("clean")
 
     def handleSettings(self):
         self.execute_bii_command("settings")

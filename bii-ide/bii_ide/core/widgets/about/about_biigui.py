@@ -7,6 +7,7 @@ from PyQt4.QtGui import QPixmap
 from PyQt4.QtCore import Qt
 from PyQt4.QtCore import SIGNAL
 from bii_ide.common.style.icons import GUI_ICON_128
+from bii_ide import __version__
 
 
 class AboutBiiGUI(QDialog):
@@ -30,7 +31,7 @@ class AboutBiiGUI(QDialog):
         hbox.addWidget(lblTitle)
         vbox.addLayout(hbox)
         vbox.addWidget(QLabel(self.tr("""Bii-IDE: Arduino IDE with support for biicode""")))
-        vbox.addWidget(QLabel(self.tr("Version: 1.0")))
+        vbox.addWidget(QLabel(self.tr("Version: %s" % __version__)))
         link_biigui = QLabel(
             self.tr('Website: <a href="https://github.com/biicode/bii-ide"><span style=" '
                 'text-decoration: underline; color:#ff9e21;">'

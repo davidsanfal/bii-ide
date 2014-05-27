@@ -24,6 +24,7 @@ OPENWS = "%s/resources/img/biiworkspace/openws.png" % _path
 REFRESHWS = "%s/resources/img/biiworkspace/refreshws.png" % _path
 #BIICOMMAND
 BUILD = "%s/resources/img/biicommand/build.png" % _path
+CLEAN = "%s/resources/img/biicommand/clean.png" % _path
 FIND = "%s/resources/img/biicommand/find.png" % _path
 MONITOR = "%s/resources/img/biicommand/monitor.png" % _path
 SETTINGS = "%s/resources/img/biicommand/settings.png" % _path
