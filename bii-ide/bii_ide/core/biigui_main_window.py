@@ -21,8 +21,9 @@ class biiGUI(QtGui.QMainWindow):
         self.center()
         self.setWindowTitle('bii-IDE')
         if not dependencies_finder():
-            QtGui.QMessageBox.about(self, "Missing dependencies",
-                                    "Missing the following tools:\n-> biicode")
+            QtGui.QMessageBox.question(self, "Missing dependencies",
+                                       "Missing the following tools:\n-> biicode",
+                                       QtGui.QMessageBox.Ok, QtGui.QMessageBox.Ok)
             sys.exit()
         self.gui_path = os.getcwd()
         if not os.path.exists(os.path.join(self.gui_path, 'resources')):
