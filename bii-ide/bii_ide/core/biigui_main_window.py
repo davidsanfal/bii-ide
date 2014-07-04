@@ -71,7 +71,7 @@ class biiGUI(QtGui.QMainWindow):
                               'New workspace', self)
 
         newWS.setStatusTip('New workspace')
-        newWS.triggered.connect(self.centralWidget.createBiiWorkspace)
+        newWS.triggered.connect(self.centralWidget.createWorkspace)
 
         workspaceMenu = self.menubar.addMenu('&Workspace')
         workspaceMenu.addAction(newWS)
