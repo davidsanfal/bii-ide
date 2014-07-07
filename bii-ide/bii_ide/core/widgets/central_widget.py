@@ -307,5 +307,5 @@ class CentralWidget(QtGui.QWidget):
         elif self.biicodeWorkspace.path:
             QtGui.QMessageBox.about(self, "There are any project", "Create a project first")
         else:
-            QtGui.QMessageBox.about(self, "There are any workspace", "Create a workspace first")
+            QtGui.QMessageBox.about(self, "There are any workspace", "Select a workspace first")
             self.workspace_finder()

@@ -29,25 +29,19 @@ class DialogWorkpace(QtGui.QDialog):
         text_font.setPointSize(10)
         text_font.setBold(False)
 
+        ws_info = QtGui.QLabel('bii-ide stores your projects in a folder called a workspace.\nYou can change your workspace when you want\n')
+        ws_info.setFont(text_font)
         self.selected_ws = QtGui.QLabel('  No workspace selected')
         self.selected_ws.setFont(text_font)
         selected_ws_title = QtGui.QLabel('Selected workspace:')
         selected_ws_title.setFont(title_font)
         button_select_ws = QtGui.QPushButton(
                                 QtGui.QIcon(OPENWS),
-                                'Select your biicode workspace',
+                                'Select your bii-ide workspace',
                                 self)
         button_select_ws.setIconSize(QtCore.QSize(40, 40))
         button_select_ws.clicked.connect(self.handleSelectWorkspace)
         button_select_ws.setStyleSheet(button_style)
-
-        button_create_ws = QtGui.QPushButton(
-                                QtGui.QIcon(NEWWS),
-                                'Create your biicode workspace',
-                                self)
-        button_create_ws.setIconSize(QtCore.QSize(40, 40))
-        button_create_ws.clicked.connect(self.handleCreateWorkspace)
-        button_create_ws.setStyleSheet(button_style)
 
         button_ok = QtGui.QPushButton(QtGui.QIcon(OK_ICON), '', self)
         button_ok.setIconSize(QtCore.QSize(40, 40))
@@ -61,8 +55,8 @@ class DialogWorkpace(QtGui.QDialog):
 
         self.ButtonsBox = QtGui.QGroupBox()
         grid = QtGui.QGridLayout()
-        grid.addWidget(button_select_ws, 0, 0, 1, 2)
-        grid.addWidget(button_create_ws, 1, 0, 1, 2)
+        grid.addWidget(ws_info, 0, 0, 1, 2)
+        grid.addWidget(button_select_ws, 1, 0, 1, 2)
         grid.addWidget(selected_ws_title, 2, 0, 1, 2)
         grid.addWidget(self.selected_ws, 3, 0, 1, 2)
         grid.addWidget(button_ok, 4, 0)
