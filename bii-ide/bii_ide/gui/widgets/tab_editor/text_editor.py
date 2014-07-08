@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from bii_ide.core.widgets.tab_editor.highlighter import Highlighter
+from bii_ide.gui.widgets.tab_editor.highlighter import Highlighter
 from PyQt4.QtCore import pyqtSlot
 from bii_ide.common.style.biigui_stylesheet import editor_style
 

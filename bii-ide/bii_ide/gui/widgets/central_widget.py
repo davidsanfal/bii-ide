@@ -2,9 +2,9 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.Qt import QString, SIGNAL
 import os
 from bii_ide.common.biicode.biicode_workspace import BiicodeWorkspace
-from bii_ide.core.widgets.popup.workspace_popup import DialogWorkpace
+from bii_ide.gui.widgets.popup.workspace_popup import DialogWorkpace
 from bii_ide.common.commands import open_terminal, execute_command
-from bii_ide.core.widgets.tab_editor.tab_editor import TabEditor
+from bii_ide.gui.widgets.tab_editor.tab_editor import TabEditor
 from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
                                                      MONITOR, CLEAN)
 from bii_ide.common.style.biigui_stylesheet import button_style
@@ -158,6 +158,16 @@ class CentralWidget(QtGui.QWidget):
         self.biiButtonsBox.setLayout(grid)
         self.biiButtonsBox.maximumHeight()
         self.biiButtonsBox.setMaximumSize(180, self.biiButtonsBox.maximumHeight())
+
+    def createHardwareToolBar(self, toolbar):
+        self.port_box = QtGui.QComboBox()
+        self.port_box.insertItems(1, ["One", "Two", "Three"])
+        self.firmare_box = QtGui.QComboBox()
+        self.firmare_box.insertItems(1, ["1", "2", "3"])
+        toolbar.addWidget(QtGui.QLabel('  Port:  '))
+        toolbar.addWidget(self.port_box)
+        toolbar.addWidget(QtGui.QLabel('  Firmware:  '))
+        toolbar.addWidget(self.firmare_box)
 
     def item_double_clicked(self, index):
         path = self.fileSystemModel.filePath(index)

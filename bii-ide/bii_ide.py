@@ -1,6 +1,6 @@
 import sys
 from PyQt4 import QtGui
-from bii_ide.core.biigui_main_window import biiGUI
+from bii_ide.gui.biigui_main_window import biiGUI
 
 
 def main():

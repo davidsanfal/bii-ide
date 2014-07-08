@@ -1,8 +1,8 @@
 from PyQt4 import QtGui, QtCore
 import os
-from bii_ide.core.widgets.tab_editor.text_editor import Editor
+from bii_ide.gui.widgets.tab_editor.text_editor import Editor
 from PyQt4.QtCore import pyqtSlot
-from bii_ide.core.widgets.tab_editor.browser import BrowserWidget
+from bii_ide.gui.widgets.tab_editor.browser import BrowserWidget
 from bii_ide.common.style.biigui_stylesheet import tab_style
 
 
