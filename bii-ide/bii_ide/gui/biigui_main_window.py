@@ -36,7 +36,6 @@ class biiGUI(QtGui.QMainWindow):
         self.createWorkspaceMenu()
         self.createBiicodeMenu()
         self.createAboutMenu()
-        self.createHardwareMenu()
         self.setCentralWidget(self.centralWidget)
 
     def center(self):
