@@ -4,26 +4,29 @@ from serial.tools import list_ports
 import platform
 
 
-class ArduinoToolChain(object):
-    def __init__(self):
-        pass
+def build(path):
+    return execute_bii('arduino:build', {}, path)
 
-    def build(self, path):
-        return execute_bii('arduino:build', {}, path)
 
-    def configure(self, path):
-        return execute_bii('arduino:configure', {}, path)
+def configure(path):
+    return execute_bii('arduino:configure', {}, path)
 
-    def settings(self, board, port, path):
-        return execute_bii('arduino:settings',
-                    {'board': board,
-                     'port': port},
-                    path)
 
-    def upload(self, firmware, path):
-        return execute_bii('arduino:upload',
-                           {'Firmware name': firmware},
-                           path)
+def monitor(path):
+    return execute_bii('arduino:monitor', {}, path)
+
+
+def settings(board, port, path):
+    return execute_bii('arduino:settings',
+                       {'board': board,
+                        'port': port},
+                       path)
+
+
+def upload(firmware, path):
+    return execute_bii('arduino:upload',
+                       {'Firmware name': firmware},
+                       path)
 
 
 def firmwares(self, hive_path):

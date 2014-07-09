@@ -1,7 +1,7 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.Qt import QString, SIGNAL
 import os
-from bii_ide.common.biicode.biicode_workspace import BiicodeWorkspace
+from bii_ide.common.bii_ide_workspace import BiiIdeWorkspace
 from bii_ide.gui.widgets.popup.workspace_popup import DialogWorkpace
 from bii_ide.common.commands import open_terminal, execute_command
 from bii_ide.gui.widgets.tab_editor.tab_editor import TabEditor
@@ -21,7 +21,7 @@ class CentralWidget(QtGui.QWidget):
 
     def initUI(self):
         self.editor = TabEditor()
-        self.biicodeWorkspace = BiicodeWorkspace()
+        self.biiIdeWorkspace = BiiIdeWorkspace()
         self.gui_configuration_path = os.path.join(self.gui_path, GUI_CONFIG)
 
         self.hive_selected = None
@@ -46,7 +46,7 @@ class CentralWidget(QtGui.QWidget):
             gui_configuration.close()
             if ws_path:
                 self._update_treeview_info(ws_path)
-            if not self.biicodeWorkspace.path:
+            if not self.biiIdeWorkspace.path:
                 self.workspace_finder()
         else:
             gui_configuration = open(self.gui_configuration_path, "w")
@@ -179,7 +179,7 @@ class CentralWidget(QtGui.QWidget):
 
         self.block_selector.clear()
         if self.hive_selected:
-            default_blocks = self.biicodeWorkspace.hive_blocks(self.hive_selected)
+            default_blocks = self.biiIdeWorkspace.hive_blocks(self.hive_selected)
             self.block_selector.addItems(default_blocks)
             self.block_selected = ""
             if default_blocks:
@@ -193,7 +193,7 @@ class CentralWidget(QtGui.QWidget):
         self._update_path_workspace_info()
 
     def _update_path_workspace_info(self):
-        self.block_path = os.path.join(self.biicodeWorkspace.path,
+        self.block_path = os.path.join(self.biiIdeWorkspace.path,
                                  self.hive_selected,
                                  "blocks",
                                  self.block_selected)
@@ -208,19 +208,19 @@ class CentralWidget(QtGui.QWidget):
             if not os.path.exists(str(select_path)):
                 os.mkdir(str(select_path))
             self._update_treeview_info(str(select_path))
-            if self.biicodeWorkspace.path:
-                self._update_gui_config_file(self.biicodeWorkspace.path)
+            if self.biiIdeWorkspace.path:
+                self._update_gui_config_file(self.biiIdeWorkspace.path)
 
     def newProject(self):
-        if self.biicodeWorkspace.path:
-            execute_command(self.gui_path, self.biicodeWorkspace.path, "init")
+        if self.biiIdeWorkspace.path:
+            execute_command(self.gui_path, self.biiIdeWorkspace.path, "init")
         else:
             QtGui.QMessageBox.about(self, "There are any workspace", "Create a workspace first")
             self.workspace_finder()
 
     def handleTerminal(self):
-        if self.biicodeWorkspace.path:
-            os.chdir(self.biicodeWorkspace.path)
+        if self.biiIdeWorkspace.path:
+            os.chdir(self.biiIdeWorkspace.path)
         open_terminal()
 
     def handleBuild(self):
@@ -239,7 +239,7 @@ class CentralWidget(QtGui.QWidget):
         self.execute_bii_command("settings")
 
     def handleSetup(self):
-        self.execute_bii_command("setup", self.biicodeWorkspace.path)
+        self.execute_bii_command("setup", self.biiIdeWorkspace.path)
 
     def handleMonitor(self):
         self.execute_bii_command("monitor")
@@ -256,19 +256,19 @@ class CentralWidget(QtGui.QWidget):
                                 caption=QString("Select Workspace Folder"))
 
         self._update_treeview_info(str(select_ws))
-        if self.biicodeWorkspace.path:
-            self._update_gui_config_file(self.biicodeWorkspace.path)
+        if self.biiIdeWorkspace.path:
+            self._update_gui_config_file(self.biiIdeWorkspace.path)
 
     def _update_treeview_info(self, workspace_path):
         if workspace_path != "":
-            self.biicodeWorkspace.setPath(workspace_path)
+            self.biiIdeWorkspace.setPath(workspace_path)
             self._refresh_workspace_info()
 
         elif not workspace_path == "":
             QtGui.QMessageBox.about(self, "wrong folder", "Choose a biicode workspace")
             self.select_folder()
 
-        elif not self.biicodeWorkspace.path:
+        elif not self.biiIdeWorkspace.path:
             self.view.hideColumn(0)
             self.hive_selector.clear()
             self.block_selector.clear()
@@ -277,14 +277,14 @@ class CentralWidget(QtGui.QWidget):
             self.view.setRootIndex(self.fileSystemModel.setRootPath(""))
 
     def _refresh_workspace_info(self):
-        if self.biicodeWorkspace.path and self.biicodeWorkspace.hives:
+        if self.biiIdeWorkspace.path and self.biiIdeWorkspace.hives:
             self.view.showColumn(0)
             self.hive_selector.clear()
-            self.hive_selector.addItems(self.biicodeWorkspace.hives)
-            self.hive_selected = self.biicodeWorkspace.hives[0]
+            self.hive_selector.addItems(self.biiIdeWorkspace.hives)
+            self.hive_selected = self.biiIdeWorkspace.hives[0]
 
             self.block_selector.clear()
-            default_blocks = self.biicodeWorkspace.hive_blocks(self.hive_selected)
+            default_blocks = self.biiIdeWorkspace.hive_blocks(self.hive_selected)
             self.block_selector.addItems(default_blocks)
             self.block_selected = default_blocks[0]
 
@@ -306,15 +306,15 @@ class CentralWidget(QtGui.QWidget):
         init_popup = DialogWorkpace(self.gui_path)
         init_popup.exec_()
         self._update_treeview_info(init_popup.selected_path)
-        if self.biicodeWorkspace.path:
-            self._update_gui_config_file(self.biicodeWorkspace.path)
+        if self.biiIdeWorkspace.path:
+            self._update_gui_config_file(self.biiIdeWorkspace.path)
 
     def execute_bii_command(self, command, exe_folder=None):
         if self.hive_selected:
             if not exe_folder:
                 exe_folder = self.block_path
             execute_command(self.gui_path, exe_folder, command)
-        elif self.biicodeWorkspace.path:
+        elif self.biiIdeWorkspace.path:
             QtGui.QMessageBox.about(self, "There are any project", "Create a project first")
         else:
             QtGui.QMessageBox.about(self, "There are any workspace", "Select a workspace first")

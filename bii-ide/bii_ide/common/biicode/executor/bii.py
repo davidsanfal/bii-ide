@@ -15,7 +15,7 @@ def execute_bii(command, request_strings={}, current_folder=None):
         pass
     log_file = os.path.join(biicode_folder, 'bii.log')
     user_io = UserGUI(sys.stdin,
-                      BiiOutputStream(StringIO.StringIO(), log_file, level='INFO'),
+                      BiiOutputStream(StringIO.StringIO(), None, level='INFO'),
                       request_strings)
     error = execute(args=command, user_io=user_io, current_folder=current_folder)
     return error, str(user_io.out)
