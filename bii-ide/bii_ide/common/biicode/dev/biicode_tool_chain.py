@@ -1,6 +1,4 @@
 from bii_ide.common.biicode.executor.bii import execute_bii
-from bii_ide.common.biicode.dev.arduino_tool_chain import settings, build,\
-    configure, upload, monitor
 
 
 def find(path):
@@ -25,16 +23,3 @@ def new(name, path, hello=False):
     else:
         command = 'new %s' % name
     return execute_bii(command, {}, path)
-
-
-BiicodeToolChain = {'find': find,
-                    'clean': clean,
-                    'publish': publish,
-                    'init': init,
-                    'new': new,
-                    'build': build,
-                    'configure': configure,
-                    'settings': settings,
-                    'upload': upload,
-                    'monitor': monitor
-                    }

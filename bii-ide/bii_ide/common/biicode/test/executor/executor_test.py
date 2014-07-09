@@ -41,21 +41,22 @@ class Test(unittest.TestCase):
         self.assertIn("[100%] Built target user_block_main", out)
 
     def toolchain_executor_test(self):
-        from bii_ide.common.biicode.dev.biicode_tool_chain import BiicodeToolChain
+        from bii_ide.common.biicode.dev.arduino_tool_chain import build, settings
+        from bii_ide.common.biicode.dev.biicode_tool_chain import new, init
         path = tempfile.gettempdir()
         path = path + ''.join(random.choice(string.ascii_lowercase) for _ in range(6))
 
-        BiicodeToolChain['init'](name='test', path=path)
+        init(name='test', path=path)
         project_path = os.path.join(path, 'test')
         self.assertTrue(os.path.exists(project_path))
 
-        _, out = BiicodeToolChain['settings'](board='uno', port='COM12', path=project_path)
+        _, out = settings(board='uno', port='COM12', path=project_path)
         self.assertIn("board uno", out)
         self.assertIn("port COM12", out)
 
-        _, out = BiicodeToolChain['new'](name='user/block', hello=True, path=project_path)
+        _, out = new(name='user/block', hello=True, path=project_path)
         self.assertIn("Successfully user/block folder created in your blocks directory!", out)
         self.assertIn("main.cpp file created in %s\\blocks\\user\\block" % project_path, out)
 
-        _, out = BiicodeToolChain['build'](project_path)
+        _, out = build(project_path)
         self.assertIn("[100%] Built target user_block_main", out)
