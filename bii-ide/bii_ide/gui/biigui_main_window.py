@@ -1,10 +1,10 @@
 from PyQt4 import QtGui
-from bii_ide.core.widgets.central_widget import CentralWidget
+from bii_ide.gui.widgets.central_widget import CentralWidget
 import os
 from bii_ide.common.style.icons import (GUI_ICON, REFRESHWS, OPENWS, NEWWS,
     SETTINGS, FIND, BUILD, UPLOAD, QT_ICON, ARDUINO_GREY, BII_GREY, NEWFILE,
     SAVEFILE, OPENFILE, EXIT_ICON, TERMINAL, SETUP, MONITOR, NEWPROJECT, CLEAN)
-from bii_ide.core.widgets.about.about_biigui import AboutBiiGUI
+from bii_ide.gui.widgets.about.about_biigui import AboutBiiGUI
 from bii_ide.common.biicode.biicode_dependencies import dependencies_finder
 import sys
 
@@ -32,7 +32,7 @@ class biiGUI(QtGui.QMainWindow):
 
         self.centralWidget = CentralWidget(self.gui_path)
         self.menubar = self.menuBar()
-        self.CreateFileMenu()
+        self.createFileMenu()
         self.createWorkspaceMenu()
         self.createBiicodeMenu()
         self.createAboutMenu()
@@ -71,7 +71,7 @@ class biiGUI(QtGui.QMainWindow):
                               'New workspace', self)
 
         newWS.setStatusTip('New workspace')
-        newWS.triggered.connect(self.centralWidget.createBiiWorkspace)
+        newWS.triggered.connect(self.centralWidget.createWorkspace)
 
         workspaceMenu = self.menubar.addMenu('&Workspace')
         workspaceMenu.addAction(newWS)
@@ -176,7 +176,7 @@ class biiGUI(QtGui.QMainWindow):
         AboutToolbar = self.addToolBar('About')
         AboutToolbar.addAction(aboutBiiDocs)
 
-    def CreateFileMenu(self):
+    def createFileMenu(self):
         newProjectAction = QtGui.QAction(QtGui.QIcon(NEWPROJECT),
                                   'New project', self)
         newProjectAction.setStatusTip('Create new project')
@@ -218,3 +218,7 @@ class biiGUI(QtGui.QMainWindow):
         fileToolbar.addAction(newAction)
         fileToolbar.addAction(openAction)
         fileToolbar.addAction(newProjectAction)
+
+    def createHardwareMenu(self):
+        hardwareToolbar = self.addToolBar('Hardware')
+        self.centralWidget.createHardwareToolBar(hardwareToolbar)

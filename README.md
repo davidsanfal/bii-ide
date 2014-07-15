@@ -2,17 +2,17 @@
 
 **bii-IDE** is an **ide for Arduino** that integrates all the functionality of [biicode](http://biicode.com/).
 
-**bii-IDE runs on windows and linux macos.** [You can download the appropriate installer for your platform in biicode](https://www.biicode.com/downloads). You need to [install biicode](http://docs.biicode.com/biicode/installation.html) too.
+**bii-IDE runs on windows, macos and linux.** [Download bii-IDE installer](https://www.biicode.com/downloads). You need to [install biicode](http://docs.biicode.com/biicode/installation.html) too.
 
 With [biicode](http://biicode.com/) you can:
 
 1. **Save your project in different folders** for a better organization.
 
-2. **Reuse yours and other users'code.** Reusing made easy: just **#include** the file you need and you get it. No more copy and paste files from project to project or dowloading zip files from tutorials.
+2. **Reuse yours and other users'code.** Reuse made easy: just **#include** the file you need and you get it. No more copy and paste files from project to project nor dowloading zip files from tutorials.
 
 3. This is a **simple** and **fast** way to **compile and upload** your code in your Arduino.
 
-5. biicode are hosting adafruit, sparkfun and many other libraries, **you won’t need to download and install libraries in your SDK anymore**.
+4. biicode are hosting adafruit, sparkfun and many other libraries, **you won’t need to download and install libraries in your SDK anymore**.
 
 ##User guide
 
