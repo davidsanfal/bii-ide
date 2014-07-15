@@ -1,18 +1,13 @@
 import subprocess
-import sys
-import platform
-
-
-finder = {"Linux": "which",
-          "Darwin": "which",
-          "Windows": "where"}
 
 
 def dependencies_finder():
-    p = subprocess.Popen([finder[platform.system()], 'bii'],
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE)
-    _, err = p.communicate()
-    if err:
+    out = subprocess.Popen("bii --version",
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            shell=True)
+    output, _ = out.communicate()
+    if not output == "":
+        return True
+    else:
         return False
-    return True

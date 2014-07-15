@@ -1,6 +1,15 @@
 import os
 
 
+def isBiiWorkspace(folder_path):
+    bii_db_path = os.path.join(folder_path, "bii", ".bii.db")
+    bii_ignore_path = os.path.join(folder_path, "bii", "ignore.bii")
+    bii_default_policies_path = os.path.join(folder_path, "bii", "default_policies.bii")
+    return os.path.exists(bii_db_path) and\
+        os.path.exists(bii_ignore_path) and\
+        os.path.exists(bii_default_policies_path)
+
+
 class BiicodeWorkspace(object):
 
     def __init__(self):
@@ -13,7 +22,7 @@ class BiicodeWorkspace(object):
     def hives(self):
         # We just want to get folders not hidden system files
         hives = os.walk(self.path).next()[1]
-        hives = [h for h in hives if os.path.exists(os.path.join(self.path, h, 'bii', '.hive.db'))]
+        hives.remove("bii")
         return hives
 
     def hive_blocks(self, hive):
