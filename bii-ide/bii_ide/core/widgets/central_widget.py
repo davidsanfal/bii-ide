@@ -1,10 +1,10 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.Qt import QString, SIGNAL
 import os
-from bii_ide.common.biicode.biicode_workspace import BiicodeWorkspace
-from bii_ide.gui.widgets.popup.workspace_popup import DialogWorkpace
+from bii_ide.common.biicode.biicode_workspace import BiicodeWorkspace, isBiiWorkspace
+from bii_ide.core.widgets.popup.workspace_popup import DialogWorkpace
 from bii_ide.common.commands import open_terminal, execute_command
-from bii_ide.gui.widgets.tab_editor.tab_editor import TabEditor
+from bii_ide.core.widgets.tab_editor.tab_editor import TabEditor
 from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
                                                      MONITOR, CLEAN)
 from bii_ide.common.style.biigui_stylesheet import button_style
@@ -159,16 +159,6 @@ class CentralWidget(QtGui.QWidget):
         self.biiButtonsBox.maximumHeight()
         self.biiButtonsBox.setMaximumSize(180, self.biiButtonsBox.maximumHeight())
 
-    def createHardwareToolBar(self, toolbar):
-        self.port_box = QtGui.QComboBox()
-        self.port_box.insertItems(1, ["One", "Two", "Three"])
-        self.firmare_box = QtGui.QComboBox()
-        self.firmare_box.insertItems(1, ["1", "2", "3"])
-        toolbar.addWidget(QtGui.QLabel('  Port:  '))
-        toolbar.addWidget(self.port_box)
-        toolbar.addWidget(QtGui.QLabel('  Firmware:  '))
-        toolbar.addWidget(self.firmare_box)
-
     def item_double_clicked(self, index):
         path = self.fileSystemModel.filePath(index)
         if os.path.isfile(path):
@@ -181,7 +171,6 @@ class CentralWidget(QtGui.QWidget):
         if self.hive_selected:
             default_blocks = self.biicodeWorkspace.hive_blocks(self.hive_selected)
             self.block_selector.addItems(default_blocks)
-            self.block_selected = ""
             if default_blocks:
                 self.block_selected = default_blocks[0]
         else:
@@ -200,20 +189,16 @@ class CentralWidget(QtGui.QWidget):
         os.chdir(self.block_path)
         self.view.setRootIndex(self.fileSystemModel.setRootPath(self.block_path))
 
-    def createWorkspace(self):
+    def createBiiWorkspace(self):
         file_dialog = QtGui.QFileDialog()
         select_path = file_dialog.getExistingDirectory(parent=None,
                                 caption=QString("Select the folder where create the workspace"))
-        if not str(select_path) == "":
-            if not os.path.exists(str(select_path)):
-                os.mkdir(str(select_path))
-            self._update_treeview_info(str(select_path))
-            if self.biicodeWorkspace.path:
-                self._update_gui_config_file(self.biicodeWorkspace.path)
+        if not str(select_path) == "" and os.path.exists(str(select_path)):
+            execute_command(self.gui_path, str(select_path), "init")
 
     def newProject(self):
         if self.biicodeWorkspace.path:
-            execute_command(self.gui_path, self.biicodeWorkspace.path, "init")
+            execute_command(self.gui_path, self.biicodeWorkspace.path, "new")
         else:
             QtGui.QMessageBox.about(self, "There are any workspace", "Create a workspace first")
             self.workspace_finder()
@@ -231,7 +216,7 @@ class CentralWidget(QtGui.QWidget):
 
     def handleFind(self):
         self.execute_bii_command("find")
-
+        
     def handleClean(self):
         self.execute_bii_command("clean")
 
@@ -260,7 +245,7 @@ class CentralWidget(QtGui.QWidget):
             self._update_gui_config_file(self.biicodeWorkspace.path)
 
     def _update_treeview_info(self, workspace_path):
-        if workspace_path != "":
+        if isBiiWorkspace(workspace_path):
             self.biicodeWorkspace.setPath(workspace_path)
             self._refresh_workspace_info()
 
@@ -317,5 +302,5 @@ class CentralWidget(QtGui.QWidget):
         elif self.biicodeWorkspace.path:
             QtGui.QMessageBox.about(self, "There are any project", "Create a project first")
         else:
-            QtGui.QMessageBox.about(self, "There are any workspace", "Select a workspace first")
+            QtGui.QMessageBox.about(self, "There are any workspace", "Create a workspace first")
             self.workspace_finder()

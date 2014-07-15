@@ -1,5 +1,3 @@
-@echo off
-set /p name="Enter Project name: " %=%
-bii init %name%
+bii init
 pause
 exit
