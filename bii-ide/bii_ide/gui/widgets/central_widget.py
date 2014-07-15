@@ -8,6 +8,8 @@ from bii_ide.gui.widgets.tab_editor.tab_editor import TabEditor
 from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
                                                      MONITOR, CLEAN)
 from bii_ide.common.style.biigui_stylesheet import button_style
+from bii_ide.gui.widgets.combobox_event import ShowEventFilter
+
 
 GUI_CONFIG = "bii_ide.txt"
 
@@ -24,10 +26,10 @@ class CentralWidget(QtGui.QWidget):
         self.biiIdeWorkspace = BiiIdeWorkspace()
         self.gui_configuration_path = os.path.join(self.gui_path, GUI_CONFIG)
 
-        self.hive_selected = None
+        self.project_selected = None
         self.block_selected = None
 
-        self.createHiveTreeView()
+        self.createProjectTreeView()
         self.createBiiCommands()
         editor_splitter = QtGui.QSplitter(QtCore.Qt.Vertical)
         editor_splitter.addWidget(self.editor.tab_widget)
@@ -53,7 +55,19 @@ class CentralWidget(QtGui.QWidget):
             gui_configuration.close()
             self.workspace_finder()
 
-    def createHiveTreeView(self):
+    def createProjectTreeView(self):
+        from bii_ide.common.biicode.dev.arduino_tool_chain import Arduino_boards
+        self.port_box = QtGui.QComboBox(self)
+        portEventFilter = ShowEventFilter(self._update_ports)
+        self.port_box.view().installEventFilter(portEventFilter)
+
+        self.firmare_box = QtGui.QComboBox(self)
+        firmareEventFilter = ShowEventFilter(self._update_firmawares)
+        self.firmare_box.view().installEventFilter(firmareEventFilter)
+
+        self.board_box = QtGui.QComboBox(self)
+        self.board_box.addItems(Arduino_boards)
+
         self.hive_selector = QtGui.QComboBox(self)
         self.hive_selector.activated[str].connect(self.handle_hive_selector)
 
@@ -73,8 +87,26 @@ class CentralWidget(QtGui.QWidget):
         self.connect(self.view, SIGNAL("doubleClicked(const QModelIndex&)"),
                 self.item_double_clicked)
 
+        port_title = QtGui.QLabel('Port')
+        board_title = QtGui.QLabel('Board')
+        firmware_title = QtGui.QLabel('Firmware')
+
         hive_title = QtGui.QLabel('Projects')
         block_title = QtGui.QLabel('Blocks')
+
+        hardwareBox = QtGui.QGroupBox()
+        hbox = QtGui.QHBoxLayout(self)
+        hbox.addWidget(port_title, 1)
+        hbox.addWidget(self.port_box, 4)
+        hbox.addWidget(board_title, 1)
+        hbox.addWidget(self.board_box, 4)
+        hardwareBox.setLayout(hbox)
+
+        firmwareBox = QtGui.QGroupBox()
+        hbox = QtGui.QHBoxLayout(self)
+        hbox.addWidget(firmware_title, 1)
+        hbox.addWidget(self.firmare_box, 4)
+        firmwareBox.setLayout(hbox)
 
         hiveBox = QtGui.QGroupBox()
         hbox = QtGui.QHBoxLayout(self)
@@ -89,6 +121,8 @@ class CentralWidget(QtGui.QWidget):
         blockBox.setLayout(hbox)
 
         vbox = QtGui.QVBoxLayout(self)
+        vbox.addWidget(hardwareBox)
+        vbox.addWidget(firmwareBox)
         vbox.addWidget(hiveBox)
         vbox.addWidget(blockBox)
         vbox.addWidget(self.view)
@@ -160,14 +194,24 @@ class CentralWidget(QtGui.QWidget):
         self.biiButtonsBox.setMaximumSize(180, self.biiButtonsBox.maximumHeight())
 
     def createHardwareToolBar(self, toolbar):
-        self.port_box = QtGui.QComboBox()
-        self.port_box.insertItems(1, ["One", "Two", "Three"])
-        self.firmare_box = QtGui.QComboBox()
-        self.firmare_box.insertItems(1, ["1", "2", "3"])
         toolbar.addWidget(QtGui.QLabel('  Port:  '))
         toolbar.addWidget(self.port_box)
         toolbar.addWidget(QtGui.QLabel('  Firmware:  '))
         toolbar.addWidget(self.firmare_box)
+
+    def _update_firmawares(self):
+        from bii_ide.common.biicode.dev.arduino_tool_chain import detect_firmwares
+        if self.project_selected:
+            firmwares = detect_firmwares(os.path.join(self.biiIdeWorkspace.path,
+                                                      self.project_selected))
+            self.firmare_box.clear()
+            self.firmare_box.addItems(firmwares)
+
+    def _update_ports(self):
+        from bii_ide.common.biicode.dev.arduino_tool_chain import detect_arduino_port
+        ports = detect_arduino_port()
+        self.port_box.clear()
+        self.port_box.addItems(ports)
 
     def item_double_clicked(self, index):
         path = self.fileSystemModel.filePath(index)
@@ -175,11 +219,11 @@ class CentralWidget(QtGui.QWidget):
             self.editor.openFile(path)
 
     def handle_hive_selector(self, text):
-        self.hive_selected = str(text)
+        self.project_selected = str(text)
 
         self.block_selector.clear()
-        if self.hive_selected:
-            default_blocks = self.biiIdeWorkspace.hive_blocks(self.hive_selected)
+        if self.project_selected:
+            default_blocks = self.biiIdeWorkspace.hive_blocks(self.project_selected)
             self.block_selector.addItems(default_blocks)
             self.block_selected = ""
             if default_blocks:
@@ -194,10 +238,11 @@ class CentralWidget(QtGui.QWidget):
 
     def _update_path_workspace_info(self):
         self.block_path = os.path.join(self.biiIdeWorkspace.path,
-                                 self.hive_selected,
+                                 self.project_selected,
                                  "blocks",
                                  self.block_selected)
         os.chdir(self.block_path)
+        self._update_firmawares()
         self.view.setRootIndex(self.fileSystemModel.setRootPath(self.block_path))
 
     def createWorkspace(self):
@@ -272,28 +317,38 @@ class CentralWidget(QtGui.QWidget):
             self.view.hideColumn(0)
             self.hive_selector.clear()
             self.block_selector.clear()
-            self.hive_selected = None
+            self.project_selected = None
             self.block_selected = None
             self.view.setRootIndex(self.fileSystemModel.setRootPath(""))
 
     def _refresh_workspace_info(self):
+        self._update_ports()
         if self.biiIdeWorkspace.path and self.biiIdeWorkspace.hives:
+            self._update_firmawares()
             self.view.showColumn(0)
             self.hive_selector.clear()
             self.hive_selector.addItems(self.biiIdeWorkspace.hives)
-            self.hive_selected = self.biiIdeWorkspace.hives[0]
+            if self.project_selected in self.biiIdeWorkspace.hives:
+                project_index = self.biiIdeWorkspace.hives.index(self.project_selected)
+                self.hive_selector.setCurrentIndex(project_index)
+            else:
+                self.project_selected = self.biiIdeWorkspace.hives[0]
 
             self.block_selector.clear()
-            default_blocks = self.biiIdeWorkspace.hive_blocks(self.hive_selected)
+            default_blocks = self.biiIdeWorkspace.hive_blocks(self.project_selected)
             self.block_selector.addItems(default_blocks)
-            self.block_selected = default_blocks[0]
+            if self.block_selected in default_blocks:
+                self.block_selector.setCurrentIndex(default_blocks.index(self.block_selected))
+            else:
+                self.block_selected = default_blocks[0] if len(default_blocks) > 0 else ""
 
             self._update_path_workspace_info()
         else:
             self.view.hideColumn(0)
+            self.firmare_box.clear()
             self.hive_selector.clear()
             self.block_selector.clear()
-            self.hive_selected = None
+            self.project_selected = None
             self.block_selected = None
             self.view.setRootIndex(self.fileSystemModel.setRootPath(""))
 
@@ -310,7 +365,7 @@ class CentralWidget(QtGui.QWidget):
             self._update_gui_config_file(self.biiIdeWorkspace.path)
 
     def execute_bii_command(self, command, exe_folder=None):
-        if self.hive_selected:
+        if self.project_selected:
             if not exe_folder:
                 exe_folder = self.block_path
             execute_command(self.gui_path, exe_folder, command)

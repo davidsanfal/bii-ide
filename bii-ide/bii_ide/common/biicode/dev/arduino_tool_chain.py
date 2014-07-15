@@ -29,11 +29,15 @@ def upload(firmware, path):
                        path)
 
 
-def firmwares(self, hive_path):
+def detect_firmwares(project_path):
     '''return the list of firmwares to upload in it'''
-    firmwares_created = [f.split('.hex')[0] for f in os.listdir(os.path.join(hive_path, 'bin')) \
-                         if f.endswith("hex")]
-    return firmwares_created
+    try:
+        bin_folder = os.path.join(project_path, 'bin')
+        firmwares_created = [f.split('.hex')[0] for f in os.listdir(bin_folder)\
+                             if f.endswith("hex")]
+        return firmwares_created
+    except:
+        return []
 
 
 def detect_arduino_port():
@@ -55,3 +59,32 @@ def detect_arduino_port():
                port["port"] and pattern.lower() in port["port"].lower():
                 found.append(port["port"])
     return found
+
+Arduino_boards = ('uno',
+                  'leonardo',
+                  'atmega328',
+                  'diecimila',
+                  'nano328',
+                  'nano',
+                  'mega2560',
+                  'mega',
+                  'esplora',
+                  'micro',
+                  'mini328',
+                  'mini',
+                  'ethernet',
+                  'fio',
+                  'bt328',
+                  'bt',
+                  'LilyPadUSB',
+                  'lilypad328',
+                  'lilypad',
+                  'pro5v328',
+                  'pro5v',
+                  'pro328',
+                  'pro',
+                  'atmega168',
+                  'atmega8',
+                  'robotControl',
+                  'robotMotor'
+                  )
