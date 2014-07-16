@@ -29,7 +29,7 @@ class DialogWorkpace(QtGui.QDialog):
         text_font.setPointSize(10)
         text_font.setBold(False)
 
-        ws_info = QtGui.QLabel('bii-ide stores your projects in a folder called a workspace.\nYou can change your workspace when you want\n')
+        ws_info = QtGui.QLabel('bii-ide stores your projects in a folder called a workspace.\nYou can change your workspace when you want.\n')
         ws_info.setFont(text_font)
         self.selected_ws = QtGui.QLabel('  No workspace selected')
         self.selected_ws.setFont(text_font)
