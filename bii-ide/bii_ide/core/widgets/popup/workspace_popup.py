@@ -1,5 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.Qt import QString
+from bii_ide.common.biicode.biicode_workspace import isBiiWorkspace
 from bii_ide.common.commands import execute_command
 from bii_ide.common.style.icons import GUI_ICON, OPENWS, NEWWS, CANCEL_ICON, OK_ICON
 from os.path import expanduser
@@ -37,11 +38,19 @@ class DialogWorkpace(QtGui.QDialog):
         selected_ws_title.setFont(title_font)
         button_select_ws = QtGui.QPushButton(
                                 QtGui.QIcon(OPENWS),
-                                'Select your bii-ide workspace',
+                                'Select your biicode workspace',
                                 self)
         button_select_ws.setIconSize(QtCore.QSize(40, 40))
         button_select_ws.clicked.connect(self.handleSelectWorkspace)
         button_select_ws.setStyleSheet(button_style)
+
+        button_create_ws = QtGui.QPushButton(
+                                QtGui.QIcon(NEWWS),
+                                'Create your biicode workspace',
+                                self)
+        button_create_ws.setIconSize(QtCore.QSize(40, 40))
+        button_create_ws.clicked.connect(self.handleCreateWorkspace)
+        button_create_ws.setStyleSheet(button_style)
 
         button_ok = QtGui.QPushButton(QtGui.QIcon(OK_ICON), '', self)
         button_ok.setIconSize(QtCore.QSize(40, 40))
@@ -55,8 +64,8 @@ class DialogWorkpace(QtGui.QDialog):
 
         self.ButtonsBox = QtGui.QGroupBox()
         grid = QtGui.QGridLayout()
-        grid.addWidget(ws_info, 0, 0, 1, 2)
-        grid.addWidget(button_select_ws, 1, 0, 1, 2)
+        grid.addWidget(button_select_ws, 0, 0, 1, 2)
+        grid.addWidget(button_create_ws, 1, 0, 1, 2)
         grid.addWidget(selected_ws_title, 2, 0, 1, 2)
         grid.addWidget(self.selected_ws, 3, 0, 1, 2)
         grid.addWidget(button_ok, 4, 0)
@@ -69,8 +78,11 @@ class DialogWorkpace(QtGui.QDialog):
                                                      directory=QString(expanduser("~")),
                                                      caption=QString("Select Workspace Folder"))
 
-        self.selected_ws.setText(select_ws)
         self.selected_path = str(select_ws)
+        if (not isBiiWorkspace(self.selected_path)) and (not self.selected_path == ""):
+            QtGui.QMessageBox.about(self, "wrong folder", "Choose a biicode workspace")
+            self.handleSelectWorkspace()
+        self.selected_ws.setText(select_ws)
 
     def handleCreateWorkspace(self):
         file_dialog = QtGui.QFileDialog()
@@ -83,11 +95,11 @@ class DialogWorkpace(QtGui.QDialog):
             execute_command(self.gui_path, str(self.selected_path), "init")
 
     def handleOk(self):
-        if self.selected_path != "":
+        if isBiiWorkspace(self.selected_path):
             self.close()
         else:
             QtGui.QMessageBox.about(self, "wrong folder",
-                                    "Choose a bii-ide workspace or create one")
+                                    "Choose a biicode workspace or create one")
 
     def handleCancel(self):
         self.close()
