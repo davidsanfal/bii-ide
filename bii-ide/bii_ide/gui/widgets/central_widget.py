@@ -403,7 +403,7 @@ class CentralWidget(QtGui.QWidget):
         if self.project_selected:
             self.shell.setText("%s\n\n" % function.__doc__)
             error, out = function(self.shell.addText, exe_folder, *args, **kwargs)
-            if not out and  error:
+            if not (out and error):
                 self.shell.addText("Finished\n\n")
             return error, out
         elif self.biiIdeWorkspace.path:
