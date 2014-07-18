@@ -403,12 +403,13 @@ class CentralWidget(QtGui.QWidget):
         if self.project_selected:
             self.shell.setText("%s\n\n" % function.__doc__)
             error, out = function(self.shell.addText, exe_folder, *args, **kwargs)
-            if not (out and error):
+            if error:
+                print out
+                self.shell.addText("unexpected error occured\n\n")
+            elif not out:
                 self.shell.addText("Finished\n\n")
-            return error, out
         elif self.biiIdeWorkspace.path:
             QtGui.QMessageBox.about(self, "There are any project", "Create a project first")
         else:
             QtGui.QMessageBox.about(self, "There are any workspace", "Select a workspace first")
             self.workspace_finder()
-        return None
