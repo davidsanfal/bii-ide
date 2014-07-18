@@ -1,7 +1,7 @@
 import os
 
 
-class BiicodeWorkspace(object):
+class BiiIdeWorkspace(object):
 
     def __init__(self):
         self.path = None

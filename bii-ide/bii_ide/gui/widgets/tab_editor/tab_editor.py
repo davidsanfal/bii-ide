@@ -63,7 +63,7 @@ class TabEditor(QtGui.QTabWidget):
                 ("\n%s file has been modified\nSave changes?\n" % name),
                 QtGui.QMessageBox.Yes | QtGui.QMessageBox.No | QtGui.QMessageBox.Cancel,
                 QtGui.QMessageBox.Cancel)
-            
+
             if reply == QtGui.QMessageBox.Cancel:
                 return
             elif reply == QtGui.QMessageBox.Yes:
