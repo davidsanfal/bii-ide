@@ -6,16 +6,15 @@ import sys
 import StringIO
 
 
-def execute_bii(command, request_strings={}, current_folder=None):
+def execute_bii(command, gui_output=None, request_strings={}, current_folder=None):
     user_folder = os.path.expanduser("~")
     biicode_folder = os.path.join(user_folder, '.biicode')
     try:
         os.makedirs(biicode_folder)
     except:
         pass
-    log_file = os.path.join(biicode_folder, 'bii.log')
     user_io = UserGUI(sys.stdin,
-                      BiiOutputStream(StringIO.StringIO(), None, level='INFO'),
+                      GUIOutputStream(gui_output, StringIO.StringIO(), None, 'INFO'),
                       request_strings)
     error = execute(args=command, user_io=user_io, current_folder=current_folder)
     return error, str(user_io.out)
@@ -33,3 +32,16 @@ class UserGUI(UserIO):
                 self.out.writeln("%s %s" % (request_string, value))
                 return value
         raise Exception('Unhandled user input request %s' % msg)
+
+
+class GUIOutputStream(BiiOutputStream):
+    def __init__(self, gui_output=None, stream=None, log_file_name=None, level='INFO'):
+        self._gui_output = gui_output
+        super(GUIOutputStream, self).__init__(stream, log_file_name, level)
+
+    def write(self, data, front=None, back=None, newline=False):
+        if self._gui_output:
+            end = "\n" if newline else ""
+            out = str(data)
+            self._gui_output("%s%s" % (out, end))
+        BiiOutputStream.write(self, data, front, back, newline)

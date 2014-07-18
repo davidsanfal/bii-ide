@@ -50,13 +50,37 @@ class Test(unittest.TestCase):
         project_path = os.path.join(path, 'test')
         self.assertTrue(os.path.exists(project_path))
 
-        _, out = settings(board='uno', port='COM12', path=project_path)
+        _, out = settings(path=project_path, board='uno', port='COM12')
         self.assertIn("board uno", out)
         self.assertIn("port COM12", out)
 
-        _, out = new(name='user/block', hello=True, path=project_path)
+        _, out = new(path=project_path, name='user/block', hello=True)
         self.assertIn("Successfully user/block folder created in your blocks directory!", out)
         self.assertIn("main.cpp file created in %s\\blocks\\user\\block" % project_path, out)
 
         _, out = build(project_path)
         self.assertIn("[100%] Built target user_block_main", out)
+
+    def gui_executor_test(self):
+        from bii_ide.common.biicode.dev.arduino_tool_chain import build, settings
+        from bii_ide.common.biicode.dev.biicode_tool_chain import new, init
+        path = tempfile.gettempdir()
+        path = path + ''.join(random.choice(string.ascii_lowercase) for _ in range(6))
+
+        init(name='test', path=path)
+        project_path = os.path.join(path, 'test')
+        self.assertTrue(os.path.exists(project_path))
+
+        _, out = self._mock_execute_bii_command(settings, project_path, 'uno', 'COM12')
+        self.assertIn("board uno", out)
+        self.assertIn("port COM12", out)
+
+        _, out = self._mock_execute_bii_command(new, project_path, 'user/block', True)
+        self.assertIn("Successfully user/block folder created in your blocks directory!", out)
+        self.assertIn("main.cpp file created in %s\\blocks\\user\\block" % project_path, out)
+
+        _, out = build(project_path)
+        self.assertIn("[100%] Built target user_block_main", out)
+
+    def _mock_execute_bii_command(self, function, exe_folder=None, *args, **kwargs):
+        return function(exe_folder, *args, **kwargs)

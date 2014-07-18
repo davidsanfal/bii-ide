@@ -13,6 +13,15 @@ editor_style = '''QTextEdit{
      padding: 2px;
  }'''
 
+shell_style = '''QTextEdit{
+     min-width: 20%;
+     border: 1px solid #C4C4C4;
+     border-radius: 4px;
+     padding: 2px;
+     background-color: #000000;
+     color: #ffffff;
+ }'''
+
 browser_style = '''QWebView{
      border: 1px solid #C4C4C4;
      border-radius: 4px;

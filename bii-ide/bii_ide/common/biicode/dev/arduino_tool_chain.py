@@ -4,27 +4,33 @@ from serial.tools import list_ports
 import platform
 
 
-def build(path):
-    return execute_bii('arduino:build', {}, path)
+def build(gui_output, path):
+    "Building your firmware..."
+    return execute_bii('arduino:build', gui_output, {}, path)
 
 
-def configure(path):
-    return execute_bii('arduino:configure', {}, path)
+def configure(gui_output, path):
+    "Configuring your project..."
+    return execute_bii('arduino:configure', gui_output, {}, path)
 
 
-def monitor(path):
-    return execute_bii('arduino:monitor', {}, path)
+def monitor(gui_output, path):
+    return execute_bii('arduino:monitor', gui_output, {}, path)
 
 
-def settings(board, port, path):
+def settings(gui_output, path, board, port):
+    "Configuring your project's settings..."
     return execute_bii('arduino:settings',
+                       gui_output,
                        {'board': board,
                         'port': port},
                        path)
 
 
-def upload(firmware, path):
+def upload(gui_output, path, firmware):
+    "Building and Uploading your firmware..."
     return execute_bii('arduino:upload',
+                       gui_output,
                        {'Firmware name': firmware},
                        path)
 

@@ -9,6 +9,7 @@ from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
                                                      MONITOR, CLEAN)
 from bii_ide.common.style.biigui_stylesheet import button_style
 from bii_ide.gui.widgets.combobox_event import ShowEventFilter
+from bii_ide.gui.widgets.shell.shell import Shell
 
 
 GUI_CONFIG = "bii_ide.txt"
@@ -23,16 +24,21 @@ class CentralWidget(QtGui.QWidget):
 
     def initUI(self):
         self.editor = TabEditor()
+        self.shell = Shell()
         self.biiIdeWorkspace = BiiIdeWorkspace()
         self.gui_configuration_path = os.path.join(self.gui_path, GUI_CONFIG)
 
         self.project_selected = None
         self.block_selected = None
+        self.port_selected = None
+        self.firmware_selected = None
+        self.board_selected = 'uno'
 
         self.createProjectTreeView()
         self.createBiiCommands()
         editor_splitter = QtGui.QSplitter(QtCore.Qt.Vertical)
         editor_splitter.addWidget(self.editor.tab_widget)
+        editor_splitter.addWidget(self.shell)
 
         splitter = QtGui.QSplitter(QtCore.Qt.Horizontal)
         splitter.addWidget(self.treeViewBox)
@@ -60,13 +66,16 @@ class CentralWidget(QtGui.QWidget):
         self.port_box = QtGui.QComboBox(self)
         portEventFilter = ShowEventFilter(self._update_ports)
         self.port_box.view().installEventFilter(portEventFilter)
+        self.port_box.activated[str].connect(self.handle_port_selector)
 
         self.firmare_box = QtGui.QComboBox(self)
         firmareEventFilter = ShowEventFilter(self._update_firmawares)
         self.firmare_box.view().installEventFilter(firmareEventFilter)
+        self.firmare_box.activated[str].connect(self.handle_firmware_selector)
 
         self.board_box = QtGui.QComboBox(self)
         self.board_box.addItems(Arduino_boards)
+        self.board_box.activated[str].connect(self.handle_board_selector)
 
         self.hive_selector = QtGui.QComboBox(self)
         self.hive_selector.activated[str].connect(self.handle_hive_selector)
@@ -201,17 +210,27 @@ class CentralWidget(QtGui.QWidget):
 
     def _update_firmawares(self):
         from bii_ide.common.biicode.dev.arduino_tool_chain import detect_firmwares
-        if self.project_selected:
+        if self.block_selected:
             firmwares = detect_firmwares(os.path.join(self.biiIdeWorkspace.path,
                                                       self.project_selected))
             self.firmare_box.clear()
-            self.firmare_box.addItems(firmwares)
+            if firmwares:
+                self.firmare_box.addItems(firmwares)
+                self.firmware_selected = firmwares[0]
+            else:
+                self.firmware_selected = None
+        else:
+            self.firmware_selected = None
 
     def _update_ports(self):
         from bii_ide.common.biicode.dev.arduino_tool_chain import detect_arduino_port
         ports = detect_arduino_port()
         self.port_box.clear()
-        self.port_box.addItems(ports)
+        if ports:
+            self.port_box.addItems(ports)
+            self.port_selected = ports[0]
+        else:
+            self.port_selected = None
 
     def item_double_clicked(self, index):
         path = self.fileSystemModel.filePath(index)
@@ -235,6 +254,15 @@ class CentralWidget(QtGui.QWidget):
     def handle_block_selector(self, text):
         self.block_selected = str(text)
         self._update_path_workspace_info()
+
+    def handle_firmware_selector(self, text):
+        self.firmware_selected = str(text)
+
+    def handle_port_selector(self, text):
+        self.port_selected = str(text)
+
+    def handle_board_selector(self, text):
+        self.board_selected = str(text)
 
     def _update_path_workspace_info(self):
         self.block_path = os.path.join(self.biiIdeWorkspace.path,
@@ -269,28 +297,35 @@ class CentralWidget(QtGui.QWidget):
         open_terminal()
 
     def handleBuild(self):
-        self.execute_bii_command("build")
+        from bii_ide.common.biicode.dev.arduino_tool_chain import build
+        self.execute_bii_command(build, self.block_path)
 
     def handleUpload(self):
-        self.execute_bii_command("upload")
+        from bii_ide.common.biicode.dev.arduino_tool_chain import upload
+        self.execute_bii_command(upload, self.block_path, self.firmware_selected)
 
     def handleFind(self):
-        self.execute_bii_command("find")
+        from bii_ide.common.biicode.dev.biicode_tool_chain import find
+        self.execute_bii_command(find, self.block_path)
 
     def handleClean(self):
-        self.execute_bii_command("clean")
+        from bii_ide.common.biicode.dev.biicode_tool_chain import clean
+        self.execute_bii_command(clean, self.block_path)
 
     def handleSettings(self):
-        self.execute_bii_command("settings")
+        from bii_ide.common.biicode.dev.arduino_tool_chain import settings
+        self.execute_bii_command(settings,
+                                 self.block_path,
+                                 self.board_selected,
+                                 self.port_selected)
 
     def handleSetup(self):
-        self.execute_bii_command("setup", self.biiIdeWorkspace.path)
+        from bii_ide.common.biicode.dev.biicode_tool_chain import setup
+        self.execute_bii_command(setup, self.biiIdeWorkspace.path)
 
     def handleMonitor(self):
-        self.execute_bii_command("monitor")
-
-    def handleClear(self):
-        self.console.clear()
+        from bii_ide.common.biicode.dev.arduino_tool_chain import monitor
+        self.execute_bii_command(monitor, self.block_path)
 
     def refresh_info(self):
         self._refresh_workspace_info()
@@ -364,13 +399,16 @@ class CentralWidget(QtGui.QWidget):
         if self.biiIdeWorkspace.path:
             self._update_gui_config_file(self.biiIdeWorkspace.path)
 
-    def execute_bii_command(self, command, exe_folder=None):
+    def execute_bii_command(self, function, exe_folder, *args, **kwargs):
         if self.project_selected:
-            if not exe_folder:
-                exe_folder = self.block_path
-            execute_command(self.gui_path, exe_folder, command)
+            self.shell.setText("%s\n\n" % function.__doc__)
+            error, out = function(self.shell.addText, exe_folder, *args, **kwargs)
+            if not out and  error:
+                self.shell.addText("Finished\n\n")
+            return error, out
         elif self.biiIdeWorkspace.path:
             QtGui.QMessageBox.about(self, "There are any project", "Create a project first")
         else:
             QtGui.QMessageBox.about(self, "There are any workspace", "Select a workspace first")
             self.workspace_finder()
+        return None
