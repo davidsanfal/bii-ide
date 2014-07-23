@@ -16,6 +16,5 @@ def dependencies_finder():
     out, err = p.communicate()
     if err:
         return False
-#     sys.path.append(os.path.dirname(out))
-    sys.path.append('D:\\biicode\\python')
+    sys.path.append(os.path.dirname(out))
     return True
