@@ -404,8 +404,10 @@ class CentralWidget(QtGui.QWidget):
             self.shell.setText("%s\n\n" % function.__doc__)
             error, out = function(self.shell.addText, exe_folder, *args, **kwargs)
             if error:
-                print out
-                self.shell.addText("unexpected error occured\n\n")
+                if out == 'Permission denied':
+                    self.shell.setText('Has been an error with the permission of your OS, a terminal was open to solve this problem.')
+                else:
+                    self.shell.addText("unexpected error occured\n\n")
             elif not out:
                 self.shell.addText("Finished\n\n")
         elif self.biiIdeWorkspace.path:

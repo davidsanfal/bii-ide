@@ -8,6 +8,7 @@ from bii_ide.gui.widgets.about.about_biigui import AboutBiiGUI
 from bii_ide.common.biicode.biicode_dependencies import dependencies_finder
 import sys
 
+GUI_PATH = os.getcwd()
 
 class biiGUI(QtGui.QMainWindow):
 

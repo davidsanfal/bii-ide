@@ -1,10 +1,30 @@
 import os
-from biicode.client.shell.bii import execute
+from biicode.client.shell.bii import create_user_io, get_updates_manager, Bii
 from biicode.client.shell.userio import UserIO
 from biicode.client.shell.biistream import BiiOutputStream
+from biicode.client.rest.bii_rest_api_client import BiiRestApiClient
+from biicode.client.conf import BII_RESTURL
+from biicode.client.exception import ObsoleteClient
+from biicode.client.command.executor import ToolExecutor
+from biicode.client.command.tool_catalog import ToolCatalog
+from biicode.client.command.biicommand import BiiCommand
+from biicode.client.setups.setup_commands import SetupCommands
 import sys
 import StringIO
+from bii_ide.common.biicode.dev.arduino import GuiArduinoToolChain
 
+
+class Bii_GUI(Bii):
+
+    def __init__(self, user_io, current_folder, biicode_folder):
+            self.user_io = user_io
+            self.current_folder = current_folder
+            self.biicode_folder = biicode_folder
+    
+            toolcatalog = ToolCatalog(BiiCommand, tools=[SetupCommands, GuiArduinoToolChain])
+            self.executor = ToolExecutor(self, toolcatalog)
+            self._user_cache = None
+            self._biiapi = None
 
 def execute_bii(command, gui_output=None, request_strings={}, current_folder=None):
     user_folder = os.path.expanduser("~")
@@ -17,7 +37,35 @@ def execute_bii(command, gui_output=None, request_strings={}, current_folder=Non
                       GUIOutputStream(gui_output, StringIO.StringIO(), None, 'INFO'),
                       request_strings)
     error = execute(args=command, user_io=user_io, current_folder=current_folder)
+    if 'Permission denied' in str(user_io.out):
+        raise IOError('Permission denied')
     return error, str(user_io.out)
+
+def execute(args, user_io=None, current_folder=None):
+    try:
+        user_folder = os.path.expanduser("~")
+        biicode_folder = os.path.join(user_folder, '.biicode')
+        current_folder = current_folder or os.getcwd()
+        user_io = user_io or create_user_io(biicode_folder)
+
+        bii = Bii_GUI(user_io, current_folder, biicode_folder)
+
+        # Update manager doesn't need proxy nor authentication to call get_server_info
+        biiapi_client = BiiRestApiClient(BII_RESTURL)
+        updates_manager = get_updates_manager(biiapi_client, biicode_folder)
+
+        try:  # Check for updates
+            response = updates_manager.check_for_updates()
+            bii.user_io.out.print_biiresponse(response)
+        except ObsoleteClient as e:
+            bii.user_io.out.error(e.message)
+            return int(True)
+
+        errors = bii.execute(args)
+        return int(errors)
+    except OSError as e:
+        print str(e)
+        return 1
 
 
 class UserGUI(UserIO):

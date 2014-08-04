@@ -2,6 +2,8 @@ from bii_ide.common.biicode.executor.bii import execute_bii
 import os
 from serial.tools import list_ports
 import platform
+from bii_ide.common.commands import execute_command
+from bii_ide.gui.biigui_main_window import GUI_PATH
 
 
 def build(gui_output, path):
@@ -29,10 +31,14 @@ def settings(gui_output, path, board, port):
 
 def upload(gui_output, path, firmware):
     "Building and Uploading your firmware..."
-    return execute_bii('arduino:upload',
+    try:
+        return execute_bii('arduino:upload',
                        gui_output,
                        {'Firmware name': firmware},
                        path)
+    except IOError as e:
+        execute_command(GUI_PATH, path, 'upload')
+        return True, e.message 
 
 
 def detect_firmwares(project_path):
