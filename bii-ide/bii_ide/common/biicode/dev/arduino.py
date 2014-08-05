@@ -8,6 +8,7 @@ from biicode.client.dev.hardware.arduino.arduinotoolchain import ArduinoToolChai
 from biicode.client.workspace.hive_disk_image import HiveDiskImage
 import sys
 import os
+import platform
 
 
 class GuiArduinoToolChain(ArduinoToolChain):
@@ -23,10 +24,10 @@ class GuiArduino(Arduino):
     def upload(self, firmware):
         '''Uploading the firmware to Arduino'''
         self.bii.user_io.out.write('Uploading...')
-
         build_command = 'make' if sys.platform != 'win32' else 'mingw32-make'
+        if platform.system() == 'Linux':
+            build_command = " sudo %s" % build_command
         build_command = "%s %s-upload" % (build_command, firmware)
-
         # This is needed for Arduino Leonardo boards
         # see:http://nicholaskell.wordpress.com/2012/08/11/arduino-leonardo-upload-from-makefile/
         arduino_settings = self.settings

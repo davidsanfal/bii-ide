@@ -10,6 +10,8 @@ from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
 from bii_ide.common.style.biigui_stylesheet import button_style
 from bii_ide.gui.widgets.combobox_event import ShowEventFilter
 from bii_ide.gui.widgets.shell.shell import Shell
+from bii_ide.common.exception import PermissionException
+from bii_ide.gui.widgets.popup.sudo_error import SudoError
 
 
 GUI_CONFIG = "bii_ide.txt"
@@ -402,14 +404,16 @@ class CentralWidget(QtGui.QWidget):
     def execute_bii_command(self, function, exe_folder, *args, **kwargs):
         if self.project_selected:
             self.shell.setText("%s\n\n" % function.__doc__)
-            error, out = function(self.shell.addText, exe_folder, *args, **kwargs)
-            if error:
-                if out == 'Permission denied':
-                    self.shell.setText('Has been an error with the permission of your OS, a terminal was open to solve this problem.')
-                else:
-                    self.shell.addText("unexpected error occured\n\n")
-            elif not out:
-                self.shell.addText("Finished\n\n")
+            try:
+                error, out = function(self.shell.addText, exe_folder, *args, **kwargs)
+                if error:
+                    self.shell.addText("\nunexpected error occured\n\n")
+                elif not out:
+                    self.shell.addText("Finished\n\n")
+            except PermissionException:
+                self.shell.setText("Permission Error. Execute bii-IDE as sudo")
+                self.error = SudoError()
+                self.error.show()
         elif self.biiIdeWorkspace.path:
             QtGui.QMessageBox.about(self, "There are any project", "Create a project first")
         else:

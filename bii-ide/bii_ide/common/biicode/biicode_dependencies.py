@@ -3,7 +3,6 @@ import sys
 import platform
 import os
 
-
 finder = {"Linux": "which",
           "Darwin": "which",
           "Windows": "where"}

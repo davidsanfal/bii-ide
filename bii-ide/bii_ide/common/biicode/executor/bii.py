@@ -38,6 +38,7 @@ def execute_bii(command, gui_output=None, request_strings={}, current_folder=Non
                       request_strings)
     error = execute(args=command, user_io=user_io, current_folder=current_folder)
     if 'Permission denied' in str(user_io.out):
+        print str(user_io.out)
         raise IOError('Permission denied')
     return error, str(user_io.out)
 
