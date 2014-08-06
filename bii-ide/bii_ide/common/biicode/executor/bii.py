@@ -9,9 +9,11 @@ from biicode.client.command.executor import ToolExecutor
 from biicode.client.command.tool_catalog import ToolCatalog
 from biicode.client.command.biicommand import BiiCommand
 from biicode.client.setups.setup_commands import SetupCommands
+from biicode.common.exception import BiiException
 import sys
 import StringIO
 from bii_ide.common.biicode.dev.arduino import GuiArduinoToolChain
+from bii_ide.gui.widgets.popup.login import BiiLogin
 
 
 class Bii_GUI(Bii):
@@ -77,12 +79,20 @@ class UserGUI(UserIO):
         super(UserGUI, self).__init__(ins, out)
 
     def request_string(self, msg):
-
         for request_string, value in self.requests.iteritems():
             if request_string in msg:
                 self.out.writeln("%s %s" % (request_string, value))
                 return value
         raise Exception('Unhandled user input request %s' % msg)
+
+    def request_login(self, username=None):
+        """Request user to input their name and password
+        :param username If username is specified it only request password"""
+        login_popup = BiiLogin(username)
+        login_popup.exec_()
+        username = login_popup.username
+        pwd = login_popup.password
+        return username, pwd
 
 
 class GUIOutputStream(BiiOutputStream):
