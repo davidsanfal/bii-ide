@@ -3,7 +3,6 @@ from PyQt4.Qt import QString, SIGNAL
 import os
 from bii_ide.common.bii_ide_workspace import BiiIdeWorkspace
 from bii_ide.gui.widgets.popup.workspace_popup import DialogWorkpace
-from bii_ide.common.commands import open_terminal, execute_command
 from bii_ide.gui.widgets.tab_editor.tab_editor import TabEditor
 from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
                                                      MONITOR, CLEAN)
@@ -12,6 +11,7 @@ from bii_ide.gui.widgets.combobox_event import ShowEventFilter
 from bii_ide.gui.widgets.shell.shell import Shell
 from bii_ide.common.exception import PermissionException
 from bii_ide.gui.widgets.popup.sudo_error import SudoError
+import sys
 
 
 GUI_CONFIG = "bii_ide.txt"
@@ -296,7 +296,14 @@ class CentralWidget(QtGui.QWidget):
     def handleTerminal(self):
         if self.biiIdeWorkspace.path:
             os.chdir(self.biiIdeWorkspace.path)
-        open_terminal()
+        if sys.platform == "win32":
+            os.system("start")
+        elif sys.platform == "linux2":
+            os.system("x-terminal-emulator")
+        elif sys.platform == "darwin":
+            os.system("osascript -e 'tell application \"Terminal\" to do script \" \"'")
+        else:
+            pass
 
     def handleBuild(self):
         from bii_ide.common.biicode.dev.arduino_tool_chain import build

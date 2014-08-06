@@ -20,11 +20,12 @@ class Bii_GUI(Bii):
             self.user_io = user_io
             self.current_folder = current_folder
             self.biicode_folder = biicode_folder
-    
+
             toolcatalog = ToolCatalog(BiiCommand, tools=[SetupCommands, GuiArduinoToolChain])
             self.executor = ToolExecutor(self, toolcatalog)
             self._user_cache = None
             self._biiapi = None
+
 
 def execute_bii(command, gui_output=None, request_strings={}, current_folder=None):
     user_folder = os.path.expanduser("~")
@@ -41,6 +42,7 @@ def execute_bii(command, gui_output=None, request_strings={}, current_folder=Non
         print str(user_io.out)
         raise IOError('Permission denied')
     return error, str(user_io.out)
+
 
 def execute(args, user_io=None, current_folder=None):
     try:
@@ -94,3 +96,17 @@ class GUIOutputStream(BiiOutputStream):
             out = str(data)
             self._gui_output("%s%s" % (out, end))
         BiiOutputStream.write(self, data, front, back, newline)
+
+# def execute_command(gui_path, change_path, command):
+#     os.chdir(change_path)
+#     if sys.platform == "win32":
+#         bat_path = os.path.join(gui_path, "resources", "script", "win", ("%s.bat" % command))
+#         os.system("start %s" % bat_path)
+#     elif sys.platform == "linux2":
+#         bash_file = os.path.join(gui_path, "resources", "script", "unix", ("%s.bash" % command))
+#         os.system('x-terminal-emulator -e "bash %s"' % bash_file)
+#     elif sys.platform == "darwin":
+#         bash_file = os.path.join(gui_path, "resources", "script", "unix", ("%s.bash" % command))
+#         os.system("osascript -e 'tell application \"Terminal\" to do script \"cd %s; bash %s\"'" % (change_path, bash_file))
+#     else:
+#         pass

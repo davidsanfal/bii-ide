@@ -8,6 +8,7 @@ from bii_ide.gui.widgets.popup.about_biigui import AboutBiiGUI
 from bii_ide.common.biicode.biicode_dependencies import dependencies_finder
 import sys
 
+
 class biiGUI(QtGui.QMainWindow):
 
     def __init__(self):
