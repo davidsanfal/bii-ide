@@ -286,12 +286,12 @@ class CentralWidget(QtGui.QWidget):
             if self.biiIdeWorkspace.path:
                 self._update_gui_config_file(self.biiIdeWorkspace.path)
 
-    def newProject(self):
-        if self.biiIdeWorkspace.path:
-            execute_command(self.gui_path, self.biiIdeWorkspace.path, "init")
-        else:
-            QtGui.QMessageBox.about(self, "There are any workspace", "Create a workspace first")
-            self.workspace_finder()
+    def handNewProject(self):
+        from bii_ide.common.biicode.dev.biicode_tool_chain import newproject
+        text, ok = QtGui.QInputDialog.getText(self, 'New project',
+            'Project name:')
+        if ok and str(text) != "":
+            self.execute_bii_command(newproject, self.biiIdeWorkspace.path, str(text))
 
     def handleTerminal(self):
         if self.biiIdeWorkspace.path:

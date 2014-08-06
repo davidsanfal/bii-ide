@@ -179,7 +179,7 @@ class biiGUI(QtGui.QMainWindow):
         newProjectAction = QtGui.QAction(QtGui.QIcon(NEWPROJECT),
                                   'New project', self)
         newProjectAction.setStatusTip('Create new project')
-        newProjectAction.triggered.connect(self.centralWidget.newProject)
+        newProjectAction.triggered.connect(self.centralWidget.handNewProject)
 
         newAction = QtGui.QAction(QtGui.QIcon(NEWFILE),
                                   'New file', self)

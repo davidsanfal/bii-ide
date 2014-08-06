@@ -4,6 +4,7 @@ from serial.tools import list_ports
 import platform
 from bii_ide.common.exception import PermissionException
 
+
 def build(gui_output, path):
     "Building your firmware..."
     return execute_bii('arduino:build', gui_output, {}, path)
@@ -29,7 +30,7 @@ def settings(gui_output, path, board, port):
 
 def upload(gui_output, path, firmware):
     "Building and Uploading your firmware..."
-    if os.geteuid() != 0:
+    if platform.system() == "Linux" and os.geteuid() != 0:
         raise PermissionException()
     return execute_bii('arduino:upload',
                        gui_output,

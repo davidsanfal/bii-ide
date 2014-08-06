@@ -16,7 +16,7 @@ def publish(gui_output, path):
     return execute_bii('publish', gui_output, {}, path)
 
 
-def init(gui_output, path, name):
+def newproject(gui_output, path, name):
     "Initializing a new project..."
     return execute_bii('init %s' % name, gui_output, {}, path)
 
