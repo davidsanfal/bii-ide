@@ -9,6 +9,7 @@ if 'resources' not in os.listdir(_path):
 
 GUI_ICON = "%s/resources/img/gorilla.png" % _path
 GUI_ICON_128 = "%s/resources/img/gorilla_128.png" % _path
+GUI_ICON_SUDO_128 = "%s/resources/img/gorilla_sudo_128.png" % _path
 OK_ICON = "%s/resources/img/ok.png" % _path
 CANCEL_ICON = "%s/resources/img/cancel.png" % _path
 EXIT_ICON = "%s/resources/img/exit.png" % _path
@@ -31,6 +32,7 @@ SETTINGS = "%s/resources/img/biicommand/settings.png" % _path
 TERMINAL = "%s/resources/img/biicommand/terminal.png" % _path
 SETUP = "%s/resources/img/biicommand/setup.png" % _path
 UPLOAD = "%s/resources/img/biicommand/upload.png" % _path
+PUBLISH = "%s/resources/img/biicommand/publish.png" % _path
 #about
 ARDUINO_GREY = "%s/resources/img/about/arduino_grey.png" % _path
 BII_GREY = "%s/resources/img/about/bii_grey.png" % _path

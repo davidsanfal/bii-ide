@@ -17,15 +17,19 @@ class Editor(QtGui.QTextEdit):
         self.tab_number = None
 
     def initUI(self):
-        font = QtGui.QFont()
-        font.setFamily("Courier")
-        font.setFixedPitch(True)
-        font.setPointSize(10)
-        self.setFont(font)
+        self.setFont(self.font)
         self.connect(self, QtCore.SIGNAL("textChanged()"),
                      self, QtCore.SLOT("handleTextChanged()"))
 
         self.highlighter = Highlighter(self.document())
+
+    @property
+    def font(self):
+        font = QtGui.QFont()
+        font.setFamily("Courier")
+        font.setFixedPitch(True)
+        font.setPointSize(10)
+        return font
 
     @pyqtSlot()
     def handleTextChanged(self):
