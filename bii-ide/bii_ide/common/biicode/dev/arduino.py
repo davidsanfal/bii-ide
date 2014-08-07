@@ -20,7 +20,6 @@ class GuiArduinoToolChain(ArduinoToolChain):
 
 
 class GuiArduino(Arduino):
-    
     def upload(self, firmware):
         '''Uploading the firmware to Arduino'''
         self.bii.user_io.out.write('Uploading...')
@@ -52,5 +51,4 @@ class GuiArduino(Arduino):
         if retcode != 0 or 'Error' in errors[-1]:
             logger.error(out)
             raise BiiException('Upload failed')
-
         return True
