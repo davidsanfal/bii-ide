@@ -5,13 +5,14 @@ from bii_ide.common.bii_ide_workspace import BiiIdeWorkspace
 from bii_ide.gui.widgets.popup.workspace_popup import DialogWorkpace
 from bii_ide.gui.widgets.tab_editor.tab_editor import TabEditor
 from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
-                                                     MONITOR, CLEAN)
+                                                     MONITOR, CLEAN, PUBLISH)
 from bii_ide.common.style.biigui_stylesheet import button_style
 from bii_ide.gui.widgets.combobox_event import ShowEventFilter
 from bii_ide.gui.widgets.shell.shell import Shell
 from bii_ide.common.exception import PermissionException
 from bii_ide.gui.widgets.popup.sudo_error import SudoError
 import sys
+from bii_ide.gui.widgets.popup.publish import BiiPublish
 
 
 GUI_CONFIG = "bii_ide.txt"
@@ -183,6 +184,13 @@ class CentralWidget(QtGui.QWidget):
         self.button_monitor.clicked.connect(self.handleMonitor)
         self.button_monitor.setStyleSheet(button_style)
 
+        self.button_publish = QtGui.QPushButton(QtGui.QIcon(PUBLISH),
+                                                 '    publish',
+                                                 self)
+        self.button_publish.setIconSize(QtCore.QSize(40, 40))
+        self.button_publish.clicked.connect(self.handlePublish)
+        self.button_publish.setStyleSheet(button_style)
+
         self.button_terminal = QtGui.QPushButton(QtGui.QIcon(TERMINAL),
                                                      '    Terminal',
                                                      self)
@@ -196,8 +204,9 @@ class CentralWidget(QtGui.QWidget):
         grid.addWidget(self.button_build, 2, 0)
         grid.addWidget(self.button_upload, 3, 0)
         grid.addWidget(self.button_monitor, 4, 0)
-        grid.addWidget(self.button_clean, 5, 0)
-        grid.addWidget(self.button_terminal, 6, 0)
+        grid.addWidget(self.button_publish, 5, 0)
+        grid.addWidget(self.button_clean, 6, 0)
+        grid.addWidget(self.button_terminal, 7, 0)
 
         self.biiButtonsBox = QtGui.QGroupBox("commands")
         self.biiButtonsBox.setLayout(grid)
@@ -335,6 +344,16 @@ class CentralWidget(QtGui.QWidget):
     def handleMonitor(self):
         from bii_ide.common.biicode.dev.arduino_tool_chain import monitor
         self.execute_bii_command(monitor, self.block_path)
+
+    def handlePublish(self):
+        from bii_ide.common.biicode.dev.biicode_tool_chain import publish
+        default_blocks = []
+        if self.project_selected:
+            default_blocks = self.biiIdeWorkspace.hive_blocks(self.project_selected)
+        if default_blocks:
+            biipublish = BiiPublish(default_blocks)
+            biipublish.exec_()
+#         self.execute_bii_command(biipublish.request, self.block_path)
 
     def refresh_info(self):
         self._refresh_workspace_info()

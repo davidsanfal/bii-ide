@@ -11,9 +11,9 @@ def clean(gui_output, path):
     return execute_bii('clean', gui_output, {}, path)
 
 
-def publish(gui_output, path):
+def publish(gui_output, path, request):
     "Publishing your block..."
-    return execute_bii('publish', gui_output, {}, path)
+    return execute_bii(request, gui_output, {}, path)
 
 
 def newproject(gui_output, path, name):
