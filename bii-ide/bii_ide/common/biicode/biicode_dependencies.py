@@ -16,7 +16,7 @@ def dependencies_finder():
     if err:
         return False
     if platform.system() == 'Linux':
-        sys.path.append("/usr/lib/biicode")
+        sys.path.insert(0, "/usr/lib/biicode")
     else:
-        sys.path.append(os.path.dirname(out))
+        sys.path.insert(0, os.path.dirname(out))
     return True

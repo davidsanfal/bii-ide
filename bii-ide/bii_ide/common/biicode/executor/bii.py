@@ -14,7 +14,8 @@ import sys
 import StringIO
 from bii_ide.common.biicode.dev.arduino import GuiArduinoToolChain
 from bii_ide.gui.widgets.popup.login import BiiLogin
-
+import traceback
+import shlex
 
 class Bii_GUI(Bii):
 
@@ -27,6 +28,26 @@ class Bii_GUI(Bii):
             self.executor = ToolExecutor(self, toolcatalog)
             self._user_cache = None
             self._biiapi = None
+
+    def execute(self, argv):
+        '''Executes user provided command. Eg. bii run:cpp'''
+        errors = False
+        try:
+            if isinstance(argv, basestring):  # To make tests easier to write
+                argv = shlex.split(argv)
+            self.executor.execute(argv)  # Executor only raises not expected Exceptions
+        except (KeyboardInterrupt, SystemExit) as e:
+            logger.debug('Execution terminated: %s', e)
+            errors = True
+        except BiiException as e:
+            errors = True
+            self.user_io.out.write(str(e))
+        except Exception as e:
+            tb = traceback.format_exc()
+            self.user_io.out.debug(tb)
+            errors = True
+            self.user_io.out.write('Unexpected Exception\n %s' % e)
+        return errors
 
 
 def execute_bii(command, gui_output=None, request_strings={}, current_folder=None):
