@@ -20,6 +20,7 @@ class GuiArduinoToolChain(ArduinoToolChain):
 
 
 class GuiArduino(Arduino):
+
     def upload(self, firmware):
         '''Uploading the firmware to Arduino'''
         self.bii.user_io.out.write('Uploading...')

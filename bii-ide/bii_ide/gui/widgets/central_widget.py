@@ -9,10 +9,10 @@ from bii_ide.common.style.icons import (BUILD, UPLOAD, FIND, SETTINGS, TERMINAL,
 from bii_ide.common.style.biigui_stylesheet import button_style
 from bii_ide.gui.widgets.combobox_event import ShowEventFilter
 from bii_ide.gui.widgets.shell.shell import Shell
-from bii_ide.common.exception import PermissionException
 from bii_ide.gui.widgets.popup.sudo_error import SudoError
 import sys
 from bii_ide.gui.widgets.popup.publish import BiiPublish
+from bii_ide.common.exception import PermissionException
 
 
 GUI_CONFIG = "bii_ide.txt"
@@ -316,7 +316,10 @@ class CentralWidget(QtGui.QWidget):
 
     def handleBuild(self):
         from bii_ide.common.biicode.dev.arduino_tool_chain import build
-        self.execute_bii_command(build, self.block_path)
+        self.execute_bii_command(build,
+                                 self.block_path,
+                                 self.board_selected,
+                                 self.port_selected)
 
     def handleUpload(self):
         from bii_ide.common.biicode.dev.arduino_tool_chain import upload
@@ -436,6 +439,7 @@ class CentralWidget(QtGui.QWidget):
                     self.shell.addText("\nunexpected error occured\n\n")
                 elif not out:
                     self.shell.addText("Finished\n\n")
+                self._refresh_workspace_info()
             except PermissionException:
                 self.shell.setText("Permission Error. Execute bii-IDE as sudo")
                 self.error = SudoError()
