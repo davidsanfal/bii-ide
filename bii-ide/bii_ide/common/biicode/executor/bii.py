@@ -10,12 +10,14 @@ from biicode.client.command.tool_catalog import ToolCatalog
 from biicode.client.command.biicommand import BiiCommand
 from biicode.client.setups.setup_commands import SetupCommands
 from biicode.common.exception import BiiException
+from biicode.common.utils.bii_logging import logger
 import sys
 import StringIO
 from bii_ide.common.biicode.dev.arduino import GuiArduinoToolChain
 from bii_ide.gui.widgets.popup.login import BiiLogin
 import traceback
 import shlex
+
 
 class Bii_GUI(Bii):
 

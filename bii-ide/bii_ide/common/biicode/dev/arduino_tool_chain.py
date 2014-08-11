@@ -5,9 +5,12 @@ import platform
 from bii_ide.common.exception import PermissionException
 
 
-def build(gui_output, path):
+def build(gui_output, path, board, port):
     "Building your firmware..."
-    return execute_bii('arduino:build', gui_output, {}, path)
+    return execute_bii('arduino:build', gui_output, 
+                       {'board': board,
+                        'port': port},
+                        path)
 
 
 def configure(gui_output, path):
