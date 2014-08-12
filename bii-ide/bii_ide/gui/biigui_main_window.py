@@ -4,7 +4,7 @@ import os
 from bii_ide.common.style.icons import (GUI_ICON, REFRESHWS, OPENWS, NEWWS,
     SETTINGS, FIND, BUILD, UPLOAD, QT_ICON, ARDUINO_GREY, BII_GREY, NEWFILE,
     SAVEFILE, OPENFILE, EXIT_ICON, TERMINAL, SETUP, MONITOR, NEWPROJECT, CLEAN)
-from bii_ide.gui.widgets.about.about_biigui import AboutBiiGUI
+from bii_ide.gui.widgets.popup.about_biigui import AboutBiiGUI
 from bii_ide.common.biicode.biicode_dependencies import dependencies_finder
 import sys
 
@@ -180,7 +180,7 @@ class biiGUI(QtGui.QMainWindow):
         newProjectAction = QtGui.QAction(QtGui.QIcon(NEWPROJECT),
                                   'New project', self)
         newProjectAction.setStatusTip('Create new project')
-        newProjectAction.triggered.connect(self.centralWidget.newProject)
+        newProjectAction.triggered.connect(self.centralWidget.handNewProject)
 
         newAction = QtGui.QAction(QtGui.QIcon(NEWFILE),
                                   'New file', self)

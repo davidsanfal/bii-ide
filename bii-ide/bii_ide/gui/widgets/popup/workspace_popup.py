@@ -1,7 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from PyQt4.Qt import QString
-from bii_ide.common.commands import execute_command
-from bii_ide.common.style.icons import GUI_ICON, OPENWS, NEWWS, CANCEL_ICON, OK_ICON
+from bii_ide.common.style.icons import GUI_ICON, OPENWS, CANCEL_ICON, OK_ICON
 from os.path import expanduser
 from bii_ide.common.style.biigui_stylesheet import button_style
 
@@ -71,16 +70,6 @@ class DialogWorkpace(QtGui.QDialog):
 
         self.selected_ws.setText(select_ws)
         self.selected_path = str(select_ws)
-
-    def handleCreateWorkspace(self):
-        file_dialog = QtGui.QFileDialog()
-        select_ws = file_dialog.getExistingDirectory(parent=None,
-                                                     directory=QString(expanduser("~")),
-                                                     caption=QString("Select the folder where create the workspace"))
-
-        self.selected_path = str(select_ws)
-        if not self.selected_path == "":
-            execute_command(self.gui_path, str(self.selected_path), "init")
 
     def handleOk(self):
         if self.selected_path != "":
