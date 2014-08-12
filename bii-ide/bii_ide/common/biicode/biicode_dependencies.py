@@ -15,8 +15,8 @@ def dependencies_finder():
     out, err = p.communicate()
     if err:
         return False
-    if platform.system() == 'Linux':
-        sys.path.insert(0, "/usr/lib/biicode")
-    else:
+    if platform.system() == 'Windows':
         sys.path.insert(0, os.path.dirname(out))
+    else:
+        sys.path.insert(0, "/usr/lib/biicode")
     return True
